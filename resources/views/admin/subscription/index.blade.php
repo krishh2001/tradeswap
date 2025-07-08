@@ -1,0 +1,84 @@
+@extends('admin.layouts.admin')
+
+@section('content')
+    <div class="user-dashboard">
+        <div class="search-create-row">
+            <div class="search-box">
+                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor">
+                    <circle cx="11" cy="11" r="8" stroke-width="2" stroke="#888"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke="#888"></line>
+                </svg>
+                <input type="text" placeholder="Search">
+            </div>
+            <a href="{{ route('admin.subscription.create') }}" class="user-create-btn">+ Create</a>
+        </div>
+
+        <div class="user-table-wrapper">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Plan Name</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Basic</td>
+                        <td>₹9,999</td>
+                        <td>
+                            <a href="{{ route('admin.subscription.view', 1) }}" class="btn-view">View</a>
+                            <a href="{{ route('admin.subscription.edit', 1) }}" class="btn-edit">Edit</a>
+                            <button class="btn-delete" onclick="openSliderModal('delete')">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Monthly</td>
+                        <td>₹499</td>
+                         <td>
+                            <a href="{{ route('admin.subscription.view', 1) }}" class="btn-view">View</a>
+                            <a href="{{ route('admin.subscription.edit', 1) }}" class="btn-edit">Edit</a>
+                            <button class="btn-delete" onclick="openSliderModal('delete')">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Premium(Yearly)</td>
+                        <td>₹4,499</td>
+                         <td>
+                            <a href="{{ route('admin.subscription.view', 1) }}" class="btn-view">View</a>
+                            <a href="{{ route('admin.subscription.edit', 1) }}" class="btn-edit">Edit</a>
+                            <button class="btn-delete" onclick="openSliderModal('delete')">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- Delete Modal --}}
+    <div class="slider-modal-overlay" id="sliderDeleteModal">
+        <div class="slider-modal">
+            <div class="slider-modal-delete-header">Confirm Deletion</div>
+            <p style="text-align:center;">Are you sure you want to delete this subscription?</p>
+            <div class="slider-modal-actions centered">
+                <button class="slider-btn-cancel" onclick="closeSliderModals()">Cancel</button>
+                <button class="slider-btn-danger">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openSliderModal(actionType) {
+            document.getElementById('sliderDeleteModal').style.display = 'flex';
+        }
+
+        function closeSliderModals() {
+            document.getElementById('sliderDeleteModal').style.display = 'none';
+        }
+    </script>
+@endsection

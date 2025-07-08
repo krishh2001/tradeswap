@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+
+class PaymentController extends Controller
+{
+    public function index()
+    {
+        return view('admin.payments.index'); 
+    }
+    public function view()
+    {
+        return view('admin.payments.view');
+    }
+}
