@@ -15,7 +15,7 @@
 
 <body>
     <div class="sidebar">
-        <h2>Trade-Swap vishnu</h2>
+        <h2>Trade-Swap</h2>
         <ul class="nav-links">
             <li class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
