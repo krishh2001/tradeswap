@@ -5,9 +5,15 @@
         <h2>Create New User</h2>
         <form action="{{ route('admin.users.store') }}" method="POST">
             @csrf
+
             <div class="form-group">
                 <label for="name">Full Name</label>
                 <input type="text" name="name" id="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile_number">Mobile Number</label>
+                <input type="text" name="mobile_number" id="mobile_number" required>
             </div>
 
             <div class="form-group">

@@ -22,10 +22,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'status'   => 'required|in:active,inactive',
+            'name'          => 'required|string|max:255',
+            'mobile_number' => 'required|string|unique:users,mobile_number',
+            'email'         => 'required|email|unique:users,email',
+            'password'      => 'required|min:6',
+            'status'        => 'required|in:active,inactive',
         ]);
 
         $data['password'] = bcrypt($data['password']);
@@ -34,9 +35,31 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User created successfully!');
     }
 
-    public function view()
+    public function edit($id)
     {
-        $user = User::latest()->first(); // just for example
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $data = $request->validate([
+            'name'          => 'required|string|max:255',
+            'mobile_number' => 'required|string|unique:users,mobile_number,' . $user->id,
+            'email'         => 'required|email|unique:users,email,' . $user->id,
+            'status'        => 'required|in:active,inactive',
+        ]);
+
+        $user->update($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
+    }
+
+    public function view($id)
+    {
+        $user = User::findOrFail($id);
         return view('admin.users.view', compact('user'));
     }
 
@@ -49,7 +72,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User status updated successfully.');
     }
 
-     public function destroy(User $user)
+    public function destroy(User $user)
     {
         $user->delete();
         return back()->with('success', 'User deleted successfully!');

@@ -20,44 +20,47 @@
 
         <div class="user-table-wrapper">
             <table id="userTable" class="user-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($users as $index => $user)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>
-                                <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit"
-                                        class="status-toggle-btn {{ $user->status == 'active' ? 'active' : 'inactive' }}">
-                                        {{ ucfirst($user->status) }}
-                                    </button>
-                                </form>
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.users.view', $user->id) }}" class="btn-view">View</a>
-                                <button type="button" class="btn-delete" onclick="openDeleteModal({{ $user->id }})">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" style="text-align:center;">No users found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
+               <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($users as $index => $user)
+        <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td>{{ $user->mobile_number }}</td>
+            <td>
+                <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit"
+                        class="status-toggle-btn {{ $user->status == 'active' ? 'active' : 'inactive' }}">
+                        {{ ucfirst($user->status) }}
+                    </button>
+                </form>
+            </td>
+            <td>
+                <a href="{{ route('admin.users.view', $user->id) }}" class="btn-view">View</a>
+                <button type="button" class="btn-delete" onclick="openDeleteModal({{ $user->id }})">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="6" style="text-align:center;">No users found.</td>
+        </tr>
+    @endforelse
+</tbody>
+
             </table>
         </div>
     </div>

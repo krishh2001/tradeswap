@@ -35,5 +35,4 @@ Route::post('/payments', [ApiPaymentController::class, 'store']);
 Route::get('/sliders', [SliderApiController::class, 'index']);
 
 
-
 Route::get('/reports', [ReportApiController::class, 'index']);

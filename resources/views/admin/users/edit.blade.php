@@ -3,30 +3,30 @@
 @section('content')
     <div class="user-create-wrapper">
         <h2>Edit User</h2>
-        <form action="#" method="POST">
-            <!-- Static form, no CSRF needed here -->
+        <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+            @csrf
+            @method('PUT')
 
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" name="name" id="name" value="John Doe" placeholder="Enter full name" required>
+                <input type="text" name="name" id="name" value="{{ $user->name }}" placeholder="Enter full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile_number">Mobile Number</label>
+                <input type="text" name="mobile_number" id="mobile_number" value="{{ $user->mobile_number }}" placeholder="Enter mobile number" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" name="email" id="email" value="john@example.com"
-                    placeholder="Enter email address" required>
-            </div>
-
-            <div class="form-group">
-                <label for="role">Role</label>
-                <input type="text" name="role" id="role" value="Admin" placeholder="Enter role" required>
+                <input type="email" name="email" id="email" value="{{ $user->email }}" placeholder="Enter email address" required>
             </div>
 
             <div class="form-group">
                 <label for="status">Status</label>
                 <select name="status" id="status" required>
-                    <option value="active" selected>Active</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="inactive" {{ $user->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                 </select>
             </div>
 

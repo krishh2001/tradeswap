@@ -15,6 +15,11 @@
         </div>
 
         <div class="form-group">
+            <label>Mobile Number</label>
+            <p class="form-value">{{ $user->mobile_number }}</p>
+        </div>
+
+        <div class="form-group">
             <label>Status</label>
             <p class="form-value">{{ ucfirst($user->status) }}</p>
         </div>
