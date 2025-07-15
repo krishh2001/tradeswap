@@ -103,13 +103,13 @@
         }
 
         document.querySelectorAll('.slider-popup-overlay').forEach(modal => {
-            modal.addEventListener('click', function (e) {
+            modal.addEventListener('click', function(e) {
                 if (e.target === modal) closeSliderModals();
             });
         });
 
         function openDeleteModal(id) {
-            document.getElementById('deleteSliderForm').action = `/admin/manage_app/sliders/${id}`;
+            document.getElementById('deleteSliderForm').action = `{{ url('admin/manage_app/sliders') }}/${id}`;
             document.getElementById('sliderDeleteModal').classList.add('show');
         }
 
@@ -119,13 +119,13 @@
 
         function toggleStatus(id) {
             fetch(`/admin/manage_app/sliders/${id}/toggle-status`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.json())
-              .then(data => console.log('Status Updated:', data));
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())
+                .then(data => console.log('Status Updated:', data));
         }
 
         function previewCreateImage(event) {
