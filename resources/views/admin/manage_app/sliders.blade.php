@@ -10,7 +10,7 @@
         <div class="slider-grid">
             @foreach ($sliders as $slider)
                 <div class="slider-card">
-                    <img src="{{ asset('storage/' . $slider->image) }}" alt="Slider Image" />
+                    <img src="{{ asset('public/storage/' . $slider->image) }}" alt="Slider Image" />
                     <div class="slider-card-body">
                         <div class="slider-card-actions">
                             <label class="slider-switch">
