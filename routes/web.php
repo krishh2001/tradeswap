@@ -27,7 +27,10 @@ Route::get('/clear', function () {
     return "Config and Cache Cleared!";
 });
 
-
+Route::get('/migrate', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return '✅ Migration executed successfully!';
+});
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
