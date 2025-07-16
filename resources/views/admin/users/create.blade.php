@@ -12,14 +12,21 @@
             </div>
 
             <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+
+            <div class="form-group">
                 <label for="mobile_number">Mobile Number</label>
                 <input type="text" name="mobile_number" id="mobile_number" required>
             </div>
 
+            
             <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" name="email" id="email" required>
+                <label for="date_of_joining">Date of Joining</label>
+                <input type="date" name="date_of_joining" id="date_of_joining">
             </div>
+
 
             <div class="form-group">
                 <label for="password">Password</label>

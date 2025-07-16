@@ -15,30 +15,35 @@
 
     <div class="user-table-wrapper">
         <table class="user-table" id="subscriptionTable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Plan Name</th>
-                    <th>Price</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($subscriptions as $index => $subscription)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $subscription->plan_name }}</td>
-                    <td>₹{{ number_format($subscription->price, 2) }}</td>
-                    <td>
-                        <a href="{{ route('admin.subscription.view', $subscription->id) }}" class="btn-view">View</a>
-                        <a href="{{ route('admin.subscription.edit', $subscription->id) }}" class="btn-edit">Edit</a>
-                        <button class="btn-delete" onclick="openDeleteModal({{ $subscription->id }})">Delete</button>
-                    </td>
-                </tr>
-                @empty
-                <tr><td colspan="4" style="text-align:center;">No subscription plans found.</td></tr>
-                @endforelse
-            </tbody>
+           <thead>
+    <tr>
+        <th>#</th>
+        <th>Plan Name</th>
+        <th>Price</th>
+        <th>Validity</th>
+        <th>Reward Limit</th>
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($subscriptions as $index => $subscription)
+    <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $subscription->plan_name }}</td>
+        <td>₹{{ number_format($subscription->price, 2) }}</td>
+        <td>{{ $subscription->validity_days }} days</td>
+        <td>₹{{ $subscription->reward_limit }}</td>
+        <td>
+            <a href="{{ route('admin.subscription.view', $subscription->id) }}" class="btn-view">View</a>
+            <a href="{{ route('admin.subscription.edit', $subscription->id) }}" class="btn-edit">Edit</a>
+            <button class="btn-delete" onclick="openDeleteModal({{ $subscription->id }})">Delete</button>
+        </td>
+    </tr>
+    @empty
+    <tr><td colspan="6" style="text-align:center;">No subscription plans found.</td></tr>
+    @endforelse
+</tbody>
+
         </table>
     </div>
 </div>

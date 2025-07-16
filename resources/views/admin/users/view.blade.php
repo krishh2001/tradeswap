@@ -20,6 +20,13 @@
         </div>
 
         <div class="form-group">
+            <label>Date of Joining</label>
+            <p class="form-value">
+                {{ $user->date_of_joining ? \Carbon\Carbon::parse($user->date_of_joining)->format('d M Y') : 'N/A' }}
+            </p>
+        </div>
+
+        <div class="form-group">
             <label>Status</label>
             <p class="form-value">{{ ucfirst($user->status) }}</p>
         </div>

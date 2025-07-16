@@ -9,17 +9,27 @@
 
             <div class="form-group">
                 <label for="name">Full Name</label>
-                <input type="text" name="name" id="name" value="{{ $user->name }}" placeholder="Enter full name" required>
+                <input type="text" name="name" id="name" value="{{ $user->name }}" placeholder="Enter full name"
+                    required>
             </div>
 
             <div class="form-group">
                 <label for="mobile_number">Mobile Number</label>
-                <input type="text" name="mobile_number" id="mobile_number" value="{{ $user->mobile_number }}" placeholder="Enter mobile number" required>
+                <input type="text" name="mobile_number" id="mobile_number" value="{{ $user->mobile_number }}"
+                    placeholder="Enter mobile number" required>
             </div>
 
             <div class="form-group">
+                <label for="date_of_joining">Date of Joining</label>
+                <input type="date" name="date_of_joining" id="date_of_joining"
+                    value="{{ old('date_of_joining', $user->date_of_joining ?? '') }}">
+            </div>
+
+
+            <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" name="email" id="email" value="{{ $user->email }}" placeholder="Enter email address" required>
+                <input type="email" name="email" id="email" value="{{ $user->email }}"
+                    placeholder="Enter email address" required>
             </div>
 
             <div class="form-group">

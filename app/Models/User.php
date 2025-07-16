@@ -22,7 +22,9 @@ class User extends Authenticatable
     'password',
     'status',
     'wallet_balance',
+    'date_of_joining', 
 ];
+
 
 
     /**
@@ -42,6 +44,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+         'date_of_joining' => 'date', 
     ];
 
     /**

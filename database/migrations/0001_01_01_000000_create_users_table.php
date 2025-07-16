@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('mobile_number')->unique();
+            $table->date('date_of_joining')->nullable(); // ✅ Removed ->after()
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->decimal('wallet_balance', 10, 2)->default(0);

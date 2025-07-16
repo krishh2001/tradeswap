@@ -17,6 +17,16 @@
             <input type="number" name="price" id="price" value="{{ $subscription->price }}" step="0.01" min="0" required>
         </div>
 
+        <div class="form-group">
+            <label for="validity_days">Validity (in Days)</label>
+            <input type="number" name="validity_days" id="validity_days" value="{{ $subscription->validity_days }}" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="reward_limit">Reward Generation Limit(₹)</label>
+            <input type="number" name="reward_limit" id="reward_limit" value="{{ $subscription->reward_limit }}" min="1" required>
+        </div>
+
         <button type="submit" class="btn-submit">Update</button>
         <a href="{{ route('admin.subscription.index') }}" class="btn-back">Back</a>
     </form>

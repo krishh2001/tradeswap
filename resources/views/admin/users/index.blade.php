@@ -9,9 +9,9 @@
         <div class="search-create-row">
             <div class="search-box">
                 <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor">
-                    <circle cx="11" cy="11" r="8" stroke-width="2" stroke="#888" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke="#888" />
+                     stroke="currentColor">
+                    <circle cx="11" cy="11" r="8" stroke-width="2" stroke="#888"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke="#888"/>
                 </svg>
                 <input type="text" id="userSearch" placeholder="Search users...">
             </div>
@@ -20,52 +20,52 @@
 
         <div class="user-table-wrapper">
             <table id="userTable" class="user-table">
-               <thead>
-    <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Mobile</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-</thead>
-<tbody>
-    @forelse($users as $index => $user)
-        <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->mobile_number }}</td>
-            <td>
-                <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit"
-                        class="status-toggle-btn {{ $user->status == 'active' ? 'active' : 'inactive' }}">
-                        {{ ucfirst($user->status) }}
-                    </button>
-                </form>
-            </td>
-            <td>
-                <a href="{{ route('admin.users.view', $user->id) }}" class="btn-view">View</a>
-                <button type="button" class="btn-delete" onclick="openDeleteModal({{ $user->id }})">
-                    Delete
-                </button>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="6" style="text-align:center;">No users found.</td>
-        </tr>
-    @endforelse
-</tbody>
-
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Date of Joining</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($users as $index => $user)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->mobile_number }}</td>
+                        <td>{{ $user->date_of_joining ? $user->date_of_joining->format('d M Y') : 'N/A' }}</td>
+                        <td>
+                            <form action="{{ route('admin.users.toggleStatus', $user->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit"
+                                        class="status-toggle-btn {{ $user->status == 'active' ? 'active' : 'inactive' }}">
+                                    {{ ucfirst($user->status) }}
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{{ route('admin.users.view', $user->id) }}" class="btn-view">View</a>
+                            <button type="button" class="btn-delete" onclick="openDeleteModal({{ $user->id }})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" style="text-align:center;">No users found.</td>
+                    </tr>
+                @endforelse
+                </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Reusable Delete Modal (same classes as product modal) -->
     <div class="modal" id="sliderDeleteModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
@@ -82,8 +82,6 @@
         </div>
     </div>
 
-   
-
     <script>
         function openDeleteModal(userId) {
             const form = document.getElementById('deleteUserForm');
@@ -95,7 +93,7 @@
             document.getElementById('sliderDeleteModal').style.display = 'none';
         }
 
-        document.getElementById('userSearch').addEventListener('keyup', function() {
+        document.getElementById('userSearch').addEventListener('keyup', function () {
             const searchValue = this.value.toLowerCase();
             const rows = document.querySelectorAll('#userTable tbody tr');
             rows.forEach(row => {
@@ -104,11 +102,10 @@
             });
         });
 
-        // Init DataTable with pagination only
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#userTable').DataTable({
                 paging: true,
-                ordering: true, // ✅ Enables column sorting
+                ordering: true,
                 searching: false,
                 lengthChange: false,
                 info: false,

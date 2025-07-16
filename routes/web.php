@@ -17,6 +17,10 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\ManageAppController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\WithdrawRequestController;
+
+
+
 
 use Illuminate\Support\Facades\Artisan;
 
@@ -69,6 +73,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{subscription}', [SubscriptionController::class, 'view'])->name('view');
             Route::delete('/{subscription}', [SubscriptionController::class, 'destroy'])->name('destroy');
         });
+
+        Route::prefix('withdraw_request')->name('withdraw_request.')->group(function () {
+              Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
+    Route::get('/{id}/view', [WithdrawRequestController::class, 'view'])->name('view');
+    Route::post('/{id}/toggle-status', [WithdrawRequestController::class, 'toggleStatus'])->name('toggle');
+    Route::delete('/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');
+
+        });
+
 
 
         // ✅ Orders
