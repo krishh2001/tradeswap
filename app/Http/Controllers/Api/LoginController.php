@@ -50,7 +50,7 @@ class LoginController extends Controller
                     'name'           => $user->name,
                     'email'          => $user->email,
                     'mobile'         => $user->mobile_number,
-                    'wallet_balance' => $user->wallet_balance,
+                    // 'wallet_balance' => $user->wallet_balance,
                     'status'         => $user->status,
                 ]
             ]
