@@ -18,7 +18,7 @@ class Authenticate
         }
 
         if (! $request->expectsJson()) {
-            return redirect()->route('admin.login'); // or use ->to('/admin/login')
+            return redirect()->route('admin'); // or use ->to('/admin/login')
         }
 
         return response()->json(['message' => 'Unauthorized'], 401);
