@@ -10,21 +10,27 @@
     </div>
 
     <div class="form-group">
-        <label>Price</label>
+        <label>Actual Price</label>
+        <p class="form-value">₹{{ number_format($subscription->actual_price, 2) }}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Current Price</label>
         <p class="form-value">₹{{ number_format($subscription->price, 2) }}</p>
     </div>
 
     <div class="form-group">
-        <label>Validity (in Days)</label>
-        <p class="form-value">{{ $subscription->validity_days }} days</p>
+        <label>Validity</label>
+        <p class="form-value">{{ $subscription->validity_days }} Days</p>
     </div>
 
     <div class="form-group">
         <label>Reward Generation Limit</label>
-        <p class="form-value">₹{{ $subscription->reward_limit }}</p>
+        <p class="form-value">₹{{ number_format($subscription->reward_limit) }}</p>
     </div>
 
-    <br>
-    <a href="{{ route('admin.subscription.index') }}" class="btn-back">Back to List</a>
+    <div class="form-actions">
+        <a href="{{ route('admin.subscription.index') }}" class="btn-back">Back to List</a>
+    </div>
 </div>
 @endsection

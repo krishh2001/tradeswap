@@ -25,13 +25,18 @@ class SubscriptionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'plan_name' => 'required|string|max:255',
-            'price'     => 'required|numeric|min:0',
+            'plan_name'      => 'required|string|max:255',
+            'actual_price'   => 'required|numeric|min:0',
+            'price'          => 'required|numeric|min:0',
+            'validity_days'  => 'required|integer|min:1',
+            'reward_limit'   => 'required|numeric|min:1',
+            'description'    => 'nullable|string',
         ]);
 
         Subscription::create($validated);
 
-        return redirect()->route('admin.subscription.index')->with('success', 'Subscription plan created successfully.');
+        return redirect()->route('admin.subscription.index')
+            ->with('success', 'Subscription plan created successfully.');
     }
 
     // Show a specific subscription
@@ -52,14 +57,19 @@ class SubscriptionController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'plan_name' => 'required|string|max:255',
-            'price'     => 'required|numeric|min:0',
+            'plan_name'      => 'required|string|max:255',
+            'actual_price'   => 'required|numeric|min:0',
+            'price'          => 'required|numeric|min:0',
+            'validity_days'  => 'required|integer|min:1',
+            'reward_limit'   => 'required|numeric|min:1',
+            'description'    => 'nullable|string',
         ]);
 
         $subscription = Subscription::findOrFail($id);
         $subscription->update($validated);
 
-        return redirect()->route('admin.subscription.index')->with('success', 'Subscription plan updated successfully.');
+        return redirect()->route('admin.subscription.index')
+            ->with('success', 'Subscription plan updated successfully.');
     }
 
     // Delete a subscription
@@ -68,6 +78,7 @@ class SubscriptionController extends Controller
         $subscription = Subscription::findOrFail($id);
         $subscription->delete();
 
-        return redirect()->route('admin.subscription.index')->with('success', 'Subscription plan deleted successfully.');
+        return redirect()->route('admin.subscription.index')
+            ->with('success', 'Subscription plan deleted successfully.');
     }
 }

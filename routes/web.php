@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
@@ -18,11 +19,10 @@ use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\ManageAppController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\WithdrawRequestController;
-
-
-
-
 use Illuminate\Support\Facades\Artisan;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 
 Route::get('/clear', function () {
     Artisan::call('config:clear');
@@ -75,11 +75,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::prefix('withdraw_request')->name('withdraw_request.')->group(function () {
-              Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
-    Route::get('/{id}/view', [WithdrawRequestController::class, 'view'])->name('view');
-    Route::post('/{id}/toggle-status', [WithdrawRequestController::class, 'toggleStatus'])->name('toggle');
-    Route::delete('/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');
-
+            Route::get('/', [WithdrawRequestController::class, 'index'])->name('index');
+            Route::get('/{id}/view', [WithdrawRequestController::class, 'view'])->name('view');
+            Route::post('/{id}/toggle-status', [WithdrawRequestController::class, 'toggleStatus'])->name('toggle');
+            Route::delete('/{id}', [WithdrawRequestController::class, 'destroy'])->name('destroy');
         });
 
 
