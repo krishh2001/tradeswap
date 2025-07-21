@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\SubscriptionApiController;
+use App\Http\Controllers\Api\WalletApiController;
+
 
 
 
@@ -27,6 +29,11 @@ Route::get('/subscriptions', [SubscriptionApiController::class, 'index']);
 
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
+
+
+Route::get('/wallets', [WalletApiController::class, 'index']);
+Route::get('/wallets/{id}', [WalletApiController::class, 'show']);
+
 
 Route::get('/orders', [OrderApiController::class, 'index']);
 Route::get('/orders/{id}', [OrderApiController::class, 'show']);
