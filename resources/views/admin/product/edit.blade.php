@@ -13,7 +13,12 @@
         </div>
 
         <div class="form-group">
-            <label>Price</label>
+            <label>Actual Price (₹)</label>
+            <input type="number" name="actual_price" value="{{ $product->actual_price }}" step="0.01" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label>Current Price (₹)</label>
             <input type="number" name="price" value="{{ $product->price }}" step="0.01" min="0" required>
         </div>
 

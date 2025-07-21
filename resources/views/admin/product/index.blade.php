@@ -21,7 +21,8 @@
                     <tr>
                         <th>#</th>
                         <th>Product Name</th>
-                        <th>Price</th>
+                        <th>Actual Price (₹)</th>
+                        <th>Current Price (₹)</th>
                         <th>Stock</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -32,10 +33,11 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>${{ number_format($product->price, 2) }}</td>
+                            <td>₹{{ number_format($product->actual_price, 2) }}</td>
+                            <td>₹{{ number_format($product->price, 2) }}</td>
                             <td>{{ $product->stock }}</td>
                             <td>
-                             <form action="{{ route('admin.product.toggleStatus', $product) }}" method="POST">
+                                <form action="{{ route('admin.product.toggleStatus', $product) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
@@ -86,7 +88,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.user-table').DataTable({
                 paging: true,
                 ordering: true,

@@ -1,4 +1,3 @@
-{{-- resources/views/admin/layouts/admin.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,13 +23,18 @@
                 <a href="{{ route('admin.users.index') }}"><i class="fas fa-user"></i>Users</a>
             </li>
 
+              <li class="{{ request()->is('admin/subscription*') ? 'active' : '' }}">
+                <a href="{{ route('admin.subscription.index') }}"><i class="fas fa-user-check"></i>Subscriptions</a>
+            </li>
+
             <li class="{{ request()->is('admin/product*') ? 'active' : '' }}">
                 <a href="{{ route('admin.product.index') }}"><i class="fas fa-box-open"></i> Products</a>
             </li>
 
-            <li class="{{ request()->is('admin/subscription*') ? 'active' : '' }}">
-                <a href="{{ route('admin.subscription.index') }}"><i class="fas fa-user-check"></i>Subscriptions</a>
+              <li class="{{ request()->is('admin/orders*') ? 'active' : '' }}">
+                <a href="{{ route('admin.orders.index') }}"><i class="fas fa-file-invoice-dollar"></i> Orders</a>
             </li>
+
             <li class="{{ request()->is('admin/withdraw_request*') ? 'active' : '' }}">
                 <a href="{{ route('admin.withdraw_request.index') }}"><i class="fas fa-user-check"></i>Withdraw Request</a>
             </li>
@@ -41,9 +45,7 @@
                 </a>
             </li>
 
-            <li class="{{ request()->is('admin/orders*') ? 'active' : '' }}">
-                <a href="{{ route('admin.orders.index') }}"><i class="fas fa-file-invoice-dollar"></i> Orders</a>
-            </li>
+          
             <li class="{{ request()->is('admin/payments*') ? 'active' : '' }}">
                 <a href="{{ route('admin.payments.index') }}">
                     <i class="fas fa-credit-card"></i> Payments

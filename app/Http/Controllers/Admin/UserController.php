@@ -49,7 +49,7 @@ class UserController extends Controller
         $data = $request->validate([
             'name'          => 'required|string|max:255',
             'mobile_number' => 'required|string|unique:users,mobile_number,' . $user->id,
-                'date_of_joining' => 'nullable|date',
+            'date_of_joining' => 'nullable|date',
             'email'         => 'required|email|unique:users,email,' . $user->id,
             'status'        => 'required|in:active,inactive',
         ]);

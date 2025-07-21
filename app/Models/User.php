@@ -30,7 +30,7 @@ class User extends Authenticatable
     protected $casts = [
         'wallet_balance' => 'decimal:2',
         'email_verified_at' => 'datetime',
-            'date_of_joining' => 'date',
+        'date_of_joining' => 'date',
 
     ];
 }

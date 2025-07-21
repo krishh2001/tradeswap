@@ -12,6 +12,7 @@ class Product extends Model
     // Mass assignable fields
     protected $fillable = [
         'name',
+        'actual_price', // Original price before any discounts
         'price',
         'stock',
         'status',

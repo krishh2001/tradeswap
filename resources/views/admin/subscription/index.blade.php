@@ -45,8 +45,8 @@
                     <tr>
                         <th>#</th>
                         <th>Plan Name</th>
-                        <th>Actual Price</th>
-                        <th>Current Price</th>
+                        {{-- <th>Actual Price</th> --}}
+                        <th>Price</th>
                         <th>Validity</th>
                         <th>Reward Limit</th>
                         <th>Description</th>
@@ -58,7 +58,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $subscription->plan_name }}</td>
-                            <td>₹{{ number_format($subscription->actual_price, 2) }}</td>
+                            {{-- <td>₹{{ number_format($subscription->actual_price, 2) }}</td> --}}
                             <td>₹{{ number_format($subscription->price, 2) }}</td>
                             <td>{{ $subscription->validity_days }} days</td>
                             <td>₹{{ $subscription->reward_limit }}</td>
@@ -74,7 +74,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="text-align:center;">No subscription plans found.</td>
+                            <td colspan="7" style="text-align:center;">No subscription plans found.</td>
                         </tr>
                     @endforelse
                 </tbody>

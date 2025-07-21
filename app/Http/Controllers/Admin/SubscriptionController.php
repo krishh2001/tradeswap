@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
     {
         $validated = $request->validate([
             'plan_name'      => 'required|string|max:255',
-            'actual_price'   => 'required|numeric|min:0',
+            // 'actual_price'   => 'required|numeric|min:0',
             'price'          => 'required|numeric|min:0',
             'validity_days'  => 'required|integer|min:1',
             'reward_limit'   => 'required|numeric|min:1',
@@ -58,7 +58,7 @@ class SubscriptionController extends Controller
     {
         $validated = $request->validate([
             'plan_name'      => 'required|string|max:255',
-            'actual_price'   => 'required|numeric|min:0',
+            // 'actual_price'   => 'required|numeric|min:0',
             'price'          => 'required|numeric|min:0',
             'validity_days'  => 'required|integer|min:1',
             'reward_limit'   => 'required|numeric|min:1',

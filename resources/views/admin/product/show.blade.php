@@ -10,8 +10,13 @@
     </div>
 
     <div class="form-group">
-        <label>Price</label>
-        <p class="form-value">${{ number_format($product->price, 2) }}</p>
+        <label>Actual Price (₹)</label>
+        <p class="form-value">₹{{ number_format($product->actual_price, 2) }}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Current Price (₹)</label>
+        <p class="form-value">₹{{ number_format($product->price, 2) }}</p>
     </div>
 
     <div class="form-group">

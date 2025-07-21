@@ -11,7 +11,7 @@ class Subscription extends Model
 
     protected $fillable = [
         'plan_name',
-        'actual_price',
+        // 'actual_price',
         'price',
         'validity_days',
         'reward_limit',

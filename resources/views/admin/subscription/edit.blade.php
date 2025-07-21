@@ -13,13 +13,13 @@
             <input type="text" name="plan_name" id="plan_name" value="{{ old('plan_name', $subscription->plan_name) }}" required>
         </div>
 
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="actual_price">Actual Price (₹)</label>
             <input type="number" name="actual_price" id="actual_price" value="{{ old('actual_price', $subscription->actual_price) }}" step="0.01" min="0" required>
-        </div>
+        </div> --}}
 
         <div class="form-group">
-            <label for="price">Current Price (₹)</label>
+            <label for="price">Price (₹)</label>
             <input type="number" name="price" id="price" value="{{ old('price', $subscription->price) }}" step="0.01" min="0" required>
         </div>
 
