@@ -91,7 +91,7 @@
                 document.getElementById('sliderCreateModal').classList.add('show');
             } else if (type === 'edit') {
                 document.getElementById('sliderEditModal').classList.add('show');
-                document.getElementById('sliderEditForm').action = `/admin/manage_app/sliders/${id}`;
+                document.getElementById('sliderEditForm').action = `{{ url('admin/manage_app/sliders') }}/${id}`;
                 document.getElementById('editImagePreview').src = image;
             }
         }
@@ -118,7 +118,7 @@
         }
 
         function toggleStatus(id) {
-            fetch(`/admin/manage_app/sliders/${id}/toggle-status`, {
+            fetch(`{{ url('admin/manage_app/sliders') }}/${id}/toggle-status`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
