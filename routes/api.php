@@ -34,9 +34,8 @@ Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPa
 Route::get('/subscriptions', [SubscriptionApiController::class, 'index']);
 
 
-Route::get('/products', [ProductApiController::class, 'index']);
+Route::get('/products', [ProductApiController::class, 'index']);   
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
-
 
 Route::get('/wallets', [WalletApiController::class, 'index']);
 Route::get('/wallets/{id}', [WalletApiController::class, 'show']);

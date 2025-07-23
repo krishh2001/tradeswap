@@ -1,6 +1,30 @@
 @extends('admin.layouts.admin')
 
 @section('content')
+    <style>
+        .user-table td:last-child {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+        }
+
+        .btn-view,
+        .btn-edit,
+        .btn-delete {
+            display: inline-block;
+            width: 100px;
+            height: 35px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
     <div class="user-dashboard">
         <div class="search-create-row">
             <div class="search-box">
@@ -20,10 +44,12 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Image</th>
                         <th>Product Name</th>
                         <th>Actual Price (₹)</th>
                         <th>Current Price (₹)</th>
                         <th>Stock</th>
+                        <th>Description</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -32,10 +58,16 @@
                     @forelse($products as $key => $product)
                         <tr>
                             <td>{{ $key + 1 }}</td>
+                            <td>
+                                <img style="height: 30px; width: 30px;"
+                                    src="{{ asset('storage/' . $product->product_img) }}" alt="{{ $product->name }}"
+                                    class="product-image">
+                            </td>
                             <td>{{ $product->name }}</td>
                             <td>₹{{ number_format($product->actual_price, 2) }}</td>
                             <td>₹{{ number_format($product->price, 2) }}</td>
                             <td>{{ $product->stock }}</td>
+                            <td>{{ Str::limit($product->description, 50) }}</td>
                             <td>
                                 <form action="{{ route('admin.product.toggleStatus', $product) }}" method="POST">
                                     @csrf

@@ -10,13 +10,16 @@ class Product extends Model
     protected $table = 'products';
 
     // Mass assignable fields
-    protected $fillable = [
-        'name',
-        'actual_price', // Original price before any discounts
-        'price',
-        'stock',
-        'status',
-    ];
+  protected $fillable = [
+    'name',
+    'actual_price',
+    'price',
+    'stock',
+    'description',
+    'product_img',
+    'status',
+];
+
 
     // Casts (optional)
     protected $casts = [

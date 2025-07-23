@@ -4,35 +4,36 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductApiController extends Controller
 {
-    // List all products
+    // GET /api/products
     public function index()
     {
-        $products = Product::where('status', 'active')->latest()->get();
+        $products = Product::where('status', 'active')->get();
 
         return response()->json([
-            'success' => true,
-            'data' => $products
-        ]);
+            'status' => true,
+            'products' => $products
+        ], 200);
     }
 
-    // Show single product
+    // GET /api/products/{id}
     public function show($id)
     {
-        $product = Product::where('status', 'active')->find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Product not found'
             ], 404);
         }
 
         return response()->json([
-            'success' => true,
-            'data' => $product
-        ]);
+            'status' => true,
+            'product' => $product
+        ], 200);
     }
 }

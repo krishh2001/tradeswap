@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // database/migrations/xxxx_xx_xx_create_products_table.php
-
-Schema::create('products', function (Blueprint $table) {
+       Schema::create('products', function (Blueprint $table) {
     $table->id();
     $table->string('name');
-    $table->decimal('actual_price', 10, 2); // Original price before any discounts
+    $table->decimal('actual_price', 10, 2);
     $table->decimal('price', 10, 2);
     $table->integer('stock')->default(0);
+    $table->text('description')->nullable();
+    $table->string('product_img')->nullable(); // New field
     $table->enum('status', ['active', 'inactive'])->default('active');
     $table->timestamps();
 });

@@ -5,6 +5,15 @@
     <h2>View Product</h2>
 
     <div class="form-group">
+        <label>Product Image</label>
+        @if($product->product_img)
+            <img style="height: 100px; width: 100px;" src="{{ asset('storage/' . $product->product_img) }}" alt="{{ $product->name }}" class="product-image">
+        @else
+            <span class="no-image">No Image</span>
+        @endif
+    </div>
+
+    <div class="form-group">
         <label>Product Name</label>
         <p class="form-value">{{ $product->name }}</p>
     </div>
@@ -22,6 +31,11 @@
     <div class="form-group">
         <label>Stock</label>
         <p class="form-value">{{ $product->stock }}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Product Description</label>
+        <p class="form-value">{{ $product->description }}</p>
     </div>
 
     <div class="form-group">

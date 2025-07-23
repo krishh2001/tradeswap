@@ -21,22 +21,53 @@ class ProductController extends Controller
         return view('admin.product.create');
     }
 
-    // Store new product
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name'   => 'required|string|max:255',
-            'actual_price' => 'required|numeric|min:0',
-            'price'  => 'required|numeric|min:0',
-            'stock'  => 'required|integer|min:0',
-            'status' => 'required|in:active,inactive',
-        ]);
+   // Store method
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'product_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'name' => 'required|string|max:255',
+        'actual_price' => 'required|numeric|min:0',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'description' => 'nullable|string',
+        'status' => 'required|in:active,inactive',
+    ]);
 
-        Product::create($data);
-        return redirect()->route('admin.product.index')->with('success', 'Product created successfully!');
+    if ($request->hasFile('product_img')) {
+        $data['product_img'] = $request->file('product_img')->store('products', 'public');
     }
 
-    // Show a single product
+    Product::create($data);
+
+    return redirect()->route('admin.product.index')->with('success', 'Product created successfully!');
+}
+
+// Update method
+public function update(Request $request, Product $product)
+{
+    $data = $request->validate([
+        'product_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'name' => 'required|string|max:255',
+        'actual_price' => 'required|numeric|min:0',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'description' => 'nullable|string',
+        'status' => 'required|in:active,inactive',
+    ]);
+
+    if ($request->hasFile('product_img')) {
+        $data['product_img'] = $request->file('product_img')->store('products', 'public');
+    }
+
+    $product->update($data);
+
+    return redirect()->route('admin.product.index')->with('success', 'Product updated successfully!');
+}
+
+
+
+     // Show a single product
     public function show(Product $product)
     {
         return view('admin.product.show', compact('product'));
@@ -46,21 +77,6 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         return view('admin.product.edit', compact('product'));
-    }
-
-    // Update product
-    public function update(Request $request, Product $product)
-    {
-        $data = $request->validate([
-            'name'   => 'required|string|max:255',
-            'actual_price' => 'required|numeric|min:0',
-            'price'  => 'required|numeric|min:0',
-            'stock'  => 'required|integer|min:0',
-            'status' => 'required|in:active,inactive',
-        ]);
-
-        $product->update($data);
-        return redirect()->route('admin.product.index')->with('success', 'Product updated successfully!');
     }
 
     public function toggleStatus(Product $product)
