@@ -86,14 +86,14 @@ class ForgotPasswordController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
-            'otp' => 'required|digits:4',
+            // 'otp' => 'required|digits:4',
             'password' => 'required|confirmed|min:6',
         ], [
             'email.required' => 'Email is required.',
             'email.email' => 'Email must be valid.',
             'email.exists' => 'This email is not registered.',
-            'otp.required' => 'OTP is required.',
-            'otp.digits' => 'OTP must be a 4-digit number.',
+            // 'otp.required' => 'OTP is required.',
+            // 'otp.digits' => 'OTP must be a 4-digit number.',
             'password.required' => 'Password is required.',
             'password.confirmed' => 'Password confirmation does not match.',
             'password.min' => 'Password must be at least 6 characters.',
