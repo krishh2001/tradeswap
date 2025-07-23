@@ -3,71 +3,111 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
+
 
 class AuthController extends Controller
 {
+    // Step 1: Registration - Send OTP to email
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'full_name'     => 'required|string|max:255',
-            'email'         => 'required|email|unique:users,email',
-            'mobile_number' => 'required|digits:10|unique:users,mobile_number',
-            'password'      => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required_with:password|same:password',
-            'referral_code' => 'nullable|string|exists:users,referral_code',
-        ], [
-            'full_name.required' => 'Full name is required.',
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please provide a valid email.',
-            'email.unique' => 'Email is already taken.',
-            'mobile_number.required' => 'Mobile number is required.',
-            'mobile_number.digits' => 'Mobile number must be 10 digits.',
-            'mobile_number.unique' => 'Mobile number already exists.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password must be at least 6 characters.',
-            'password.confirmed' => 'Passwords do not match.',
-            'referral_code.exists' => 'Invalid referral code.',
+            'name'           => 'required|string|max:255',
+            'email'          => 'required|email|unique:users,email',
+            'mobile_number'  => 'required|string|unique:users,mobile_number',
+            'password'       => 'required|string|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
-                'errors'  => $validator->errors(),
+                'status'  => false,
+                'message' => 'Validation failed.',
+                'errors'  => $validator->errors()
             ], 422);
         }
 
-        do {
-            $generatedReferralCode = strtoupper(Str::random(6));
-        } while (User::where('referral_code', $generatedReferralCode)->exists());
+        $otp = rand(1000, 9999);
 
-        $user = User::create([
-            'name'            => $request->full_name,
-            'email'           => $request->email,
-            'mobile_number'   => $request->mobile_number,
-            'password'        => bcrypt($request->password),
-            'wallet_balance'  => 0,
-            'status'          => 'active',
-            'referral_code'   => $generatedReferralCode,
-            'date_of_joining' => now()->format('Y-m-d'),
-        ]);
+        // Store data temporarily (5 min)
+        Cache::put('pending_registration_' . $request->email, [
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile_number' => $request->mobile_number,
+            'password' => $request->password, // ✅ plain password
+        ], now()->addMinutes(5));
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Send email
+        Mail::raw("Your OTP is: $otp", function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Verify your email');
+        });
+
+        // Save OTP to cache
+        Cache::put('otp_' . $request->email, $otp, now()->addMinutes(5));
 
         return response()->json([
-            'message'       => 'Registration successful',
-            'access_token'  => $token,
-            'token_type'    => 'Bearer',
-            'user'          => $user,
-        ], 201);
+            'status' => true,
+            'message' => 'OTP sent to your email. Please verify to complete registration.'
+        ]);
+    }
+
+
+    // Step 2: Verify OTP
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp'   => 'required|digits:4',
+        ]);
+
+        $cachedOtp = Cache::get('otp_' . $request->email);
+        $userData = Cache::get('pending_registration_' . $request->email);
+
+        if (!$cachedOtp || !$userData) {
+            return response()->json(['message' => 'OTP expired or invalid.'], 400);
+        }
+
+        if ($request->otp != $cachedOtp) {
+            return response()->json(['message' => 'Incorrect OTP.'], 400);
+        }
+
+        // Generate unique referral code
+        $referralCode = strtoupper(substr(md5(uniqid()), 0, 8));
+
+        $user = User::create([
+            'name'              => $userData['name'],
+            'email'             => $userData['email'],
+            'mobile_number'     => $userData['mobile_number'],
+            'password'          => $userData['password'],
+            'referral_code'     => $referralCode,
+            'is_email_verified' => true,
+            'email_verified_at' => now(),
+            'date_of_joining'   => now(),
+        ]);
+
+        // Clear OTP and temp data
+        Cache::forget('otp_' . $request->email);
+        Cache::forget('pending_registration_' . $request->email);
+
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Email verified and user registered successfully.',
+            'token'   => $token,
+            'user'    => $user,
+        ]);
     }
 
 
 
+    // Login
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -137,6 +177,29 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => $user,
+        ]);
+    }
+
+
+
+
+    // Get authenticated user
+    public function user(Request $request)
+    {
+        return response()->json([
+            'status' => true,
+            'user'   => $request->user(),
+        ]);
+    }
+
+    // Logout
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Logged out successfully.',
         ]);
     }
 }

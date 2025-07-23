@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('referral_code')->nullable()->unique();
             $table->date('date_of_joining')->nullable(); // ✅ Removed ->after()
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('email_otp')->nullable();
+            $table->boolean('is_email_verified')->default(false);
+
             $table->string('password');
             $table->decimal('wallet_balance', 10, 2)->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');

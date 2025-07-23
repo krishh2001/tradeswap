@@ -17,7 +17,14 @@ use App\Http\Controllers\Api\WalletApiController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
 
 // Forgot Password Flow
 Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp']);
