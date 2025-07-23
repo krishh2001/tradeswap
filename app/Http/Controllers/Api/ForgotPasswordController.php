@@ -85,39 +85,32 @@ class ForgotPasswordController extends Controller
     public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            // 'otp' => 'required|digits:4',
+            'email'    => 'required|email|exists:users,email',
             'password' => 'required|confirmed|min:6',
         ], [
-            'email.required' => 'Email is required.',
-            'email.email' => 'Email must be valid.',
-            'email.exists' => 'This email is not registered.',
-            // 'otp.required' => 'OTP is required.',
-            // 'otp.digits' => 'OTP must be a 4-digit number.',
+            'email.required'    => 'Email is required.',
+            'email.email'       => 'Email must be valid.',
+            'email.exists'      => 'This email is not registered.',
             'password.required' => 'Password is required.',
             'password.confirmed' => 'Password confirmation does not match.',
-            'password.min' => 'Password must be at least 6 characters.',
+            'password.min'      => 'Password must be at least 6 characters.',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $otpRecord = PasswordResetOtp::where('email', $request->email)
-            ->where('otp', $request->otp)
-            ->where('expires_at', '>=', now())
-            ->first();
+        $user = User::where('email', $request->email)->first();
 
-        if (!$otpRecord) {
-            return response()->json(['message' => 'Invalid or expired OTP.'], 400);
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
         }
 
-        $user = User::where('email', $request->email)->first();
-        $user->password = $request->password; 
-
+        $user->password = $request->password; // Will be hashed by model mutator
         $user->save();
 
-        $otpRecord->delete();
+        // Optionally delete any stale OTPs for that email
+        PasswordResetOtp::where('email', $request->email)->delete();
 
         return response()->json([
             'message' => 'Password reset successfully. You can now log in.',
