@@ -9,7 +9,7 @@
 
         {{-- Product Image --}}
         <div class="form-group">
-            <label for="image">Product Image</label>
+            <label for="product_img">Product Image</label>
             <input type="file" name="product_img" id="product_img" accept="image/*" required>
         </div>
 
