@@ -60,7 +60,7 @@
                             <td>{{ $key + 1 }}</td>
                             <td>
                                 <img style="height: 30px; width: 30px;"
-                                    src="{{ asset('storage/' . $product->product_img) }}" alt="{{ $product->name }}"
+                                    src="{{ asset('public/storage/' . $product->product_img) }}" alt="{{ $product->name }}"
                                     class="product-image">
                             </td>
                             <td>{{ $product->name }}</td>

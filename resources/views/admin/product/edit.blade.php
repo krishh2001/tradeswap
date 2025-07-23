@@ -13,7 +13,7 @@
             <input type="file" name="product_img" accept="image/*">
             @if ($product->product_img)
                 <div style="margin-top: 10px;">
-                    <img src="{{ asset('storage/' . $product->product_img) }}" alt="Product Image" width="100">
+                    <img src="{{ asset('public/storage/' . $product->product_img) }}" alt="Product Image" width="100">
                 </div>
             @endif
         </div>

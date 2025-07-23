@@ -7,7 +7,7 @@
     <div class="form-group">
         <label>Product Image</label>
         @if($product->product_img)
-            <img style="height: 100px; width: 100px;" src="{{ asset('storage/' . $product->product_img) }}" alt="{{ $product->name }}" class="product-image">
+            <img style="height: 100px; width: 100px;" src="{{ asset('public/storage/' . $product->product_img) }}" alt="{{ $product->name }}" class="product-image">
         @else
             <span class="no-image">No Image</span>
         @endif
