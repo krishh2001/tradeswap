@@ -113,7 +113,8 @@ class ForgotPasswordController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        $user->password = Hash::make($request->password);
+        $user->password = $request->password; 
+
         $user->save();
 
         $otpRecord->delete();
