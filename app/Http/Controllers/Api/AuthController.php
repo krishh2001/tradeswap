@@ -146,11 +146,11 @@ class AuthController extends Controller
         // Fetch user and check soft-deletion
         $user = User::where($fieldType, $loginId)->first();
 
-       if (!$user) {
-    return response()->json([
-        'message' => "$errorField is not registered with us."
-    ], 400); // Bad Request
-}
+        if (!$user) {
+            return response()->json([
+                'message' => "$errorField is not registered with us."
+            ], 400); // Bad Request
+        }
 
 
         if (!Hash::check($request->password, $user->password)) {
@@ -213,7 +213,7 @@ class AuthController extends Controller
             'name'           => 'required|string|max:255',
             'email'          => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'mobile_number'  => ['required', 'digits:10', Rule::unique('users')->ignore($user->id)],
-            'profile_photo'  => 'nullable|image|max:2048', // Max 2MB
+            'profile_photo' => 'nullable|image|max:5120', // Max 5MB
         ]);
 
         $user->name = $request->name;
@@ -242,9 +242,10 @@ class AuthController extends Controller
                 'name'           => $user->name,
                 'email'          => $user->email,
                 'mobile_number'  => $user->mobile_number,
-                'profile_photo'  => $user->profile_photo
-                    ? asset('storage/profile_photos/' . $user->profile_photo)
+                'profile_photo' => $user->profile_photo
+                    ? 'storage/profile_photos/' . $user->profile_photo
                     : null,
+
             ]
         ]);
     }
