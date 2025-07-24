@@ -183,23 +183,59 @@ class AuthController extends Controller
 
 
 
-    // Get authenticated user
+   
+    // ✅ Get Authenticated User
     public function user(Request $request)
     {
-        return response()->json([
-            'status' => true,
-            'user'   => $request->user(),
-        ]);
+        try {
+            $user = $request->user();
+
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Invalid or expired token.',
+                ], 401);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User fetched successfully.',
+                'user' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching user.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    // Logout
+    // ✅ Logout Authenticated User
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        try {
+            $user = $request->user();
 
-        return response()->json([
-            'status'  => true,
-            'message' => 'Logged out successfully.',
-        ]);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Invalid or expired token.',
+                ], 401);
+            }
+
+            $user->tokens()->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Logged out successfully.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred during logout.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
