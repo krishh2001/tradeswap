@@ -8,52 +8,39 @@ use App\Models\Order;
 
 class OrderApiController extends Controller
 {
-    // List all orders (for user)
-    public function index()
-    {
-        $orders = Order::with('user')->latest()->get();
+    // Admin sees all orders
+   public function index()
+{
+    $orders = Order::with('user', 'product')->latest()->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $orders
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => 'Orders fetched successfully',
+        'data' => $orders,
+    ], 200);
+}
 
-    // Get a single order
-    public function show($id)
-    {
-        $order = Order::with('user')->find($id);
-
-        if (!$order) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Order not found'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $order
-        ]);
-    }
-
-    // Store a new order
+    // User places an order
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'total_price' => 'required|numeric|min:0',
-            'status' => 'nullable|in:pending,processing,completed,cancelled',
+        $request->validate([
+            'order_id'    => 'required|unique:orders',
+            'user_id'     => 'required|exists:users,id',
+            'product_id'  => 'required|exists:products,id',
+            'total_price' => 'required|numeric',
         ]);
 
-        $order = Order::create($data);
+        $order = Order::create([
+            'order_id'    => $request->order_id,
+            'user_id'     => $request->user_id,
+            'product_id'  => $request->product_id,
+            'total_price' => $request->total_price,
+            'status'      => 'pending',
+        ]);
 
         return response()->json([
-            'success' => true,
             'message' => 'Order placed successfully',
-            'data' => $order
-        ]);
+            'order'   => $order
+        ], 201);
     }
 }

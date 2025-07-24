@@ -41,9 +41,10 @@ Route::get('/wallets', [WalletApiController::class, 'index']);
 Route::get('/wallets/{id}', [WalletApiController::class, 'show']);
 
 
-Route::get('/orders', [OrderApiController::class, 'index']);
-Route::get('/orders/{id}', [OrderApiController::class, 'show']);
-Route::post('/orders', [OrderApiController::class, 'store']);
+
+Route::get('/orders', [OrderApiController::class, 'index']); // Admin fetch all orders
+Route::post('/order', [OrderApiController::class, 'store']); // Place new order
+
 
 
 // Example: /api/pages/privacy_policy

@@ -20,37 +20,38 @@
             <table id="ordersTable" class="user-table display">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Order ID</th>
-                        <th>User Name</th>
-                        <th>Plan</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>#ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Total Price</th>
+                        {{-- <th>Status</th> --}}
+                        <th>Placed At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($orders as $index => $order)
+                    @forelse ($orders as $order)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $order->order_id }}</td>
-                            <td>{{ $order->user->name ?? 'N/A' }}</td>
-                            <td>{{ $order->plan }}</td>
-                            <td>${{ number_format($order->amount, 2) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($order->date)->format('Y-m-d') }}</td>
-                            <td>
-                                <span
-                                    class="badge badge-{{ $order->status == 'completed' ? 'success' : ($order->status == 'pending' ? 'warning' : 'danger') }}">
+                            <td>{{ $order->id }}</td>
+                            <td>{{ $order->user->name ?? 'Guest' }}</td>
+                            <td>{{ $order->product->name ?? 'N/A' }}</td>
+                            <td>₹{{ number_format($order->total_price, 2) }}</td>
+                            {{-- <td>
+                                <span class="badge {{ $order->status == 'completed' ? 'badge-success' : 'badge-warning' }}">
                                     {{ ucfirst($order->status) }}
                                 </span>
-                            </td>
+                            </td> --}}
+                            <td>{{ $order->created_at->format('d M, Y') }}</td>
                             <td>
                                 <a href="{{ route('admin.orders.view', $order->id) }}" class="btn-view">View</a>
                                 <button class="btn-delete" onclick="openDeleteModal({{ $order->id }})">Delete</button>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7">No orders found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -87,7 +88,7 @@
             document.getElementById('sliderDeleteModal').classList.remove('show');
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             const table = $('#ordersTable').DataTable({
                 paging: true,
                 ordering: true,
@@ -95,7 +96,7 @@
                 dom: 'lrtip' // ✅ removes default search bar
             });
 
-            $('#orderSearch').on('keyup', function () {
+            $('#orderSearch').on('keyup', function() {
                 table.search(this.value).draw();
             });
         });

@@ -10,28 +10,28 @@
         </div>
 
         <div class="form-group">
-            <label>User Name</label>
-            <p class="form-value">{{ $order->user->name ?? 'N/A' }}</p>
+            <label>Customer</label>
+            <p class="form-value">{{ $order->user->name ?? 'Guest' }}</p>
         </div>
 
         <div class="form-group">
-            <label>Plan</label>
-            <p class="form-value">{{ $order->plan }}</p>
+            <label>Product</label>
+            <p class="form-value">{{ $order->product->name ?? 'N/A' }}</p>
         </div>
 
         <div class="form-group">
-            <label>Amount</label>
-            <p class="form-value">${{ number_format($order->amount, 2) }}</p>
+            <label>Total Price</label>
+            <p class="form-value">₹{{ number_format($order->total_price, 2) }}</p>
         </div>
 
-        <div class="form-group">
-            <label>Date</label>
-            <p class="form-value">{{ \Carbon\Carbon::parse($order->date)->format('Y-m-d') }}</p>
-        </div>
-
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label>Status</label>
             <p class="form-value">{{ ucfirst($order->status) }}</p>
+        </div> --}}
+
+        <div class="form-group">
+            <label>Placed At</label>
+            <p class="form-value">{{ $order->created_at->format('d M, Y') }}</p>
         </div>
 
         <br>
