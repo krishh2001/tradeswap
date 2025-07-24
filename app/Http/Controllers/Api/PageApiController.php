@@ -18,7 +18,7 @@ class PageApiController extends Controller
         return response()->json([
             'success' => true,
             'type' => $key,
-            'content' => $page->content,
+            'content' => $page->content, 
         ]);
     }
 }
