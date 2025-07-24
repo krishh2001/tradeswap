@@ -21,9 +21,14 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/profile/update', [AuthController::class, 'updateProfile']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+
+
 
 
 // Forgot Password Flow
@@ -34,7 +39,7 @@ Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPa
 Route::get('/subscriptions', [SubscriptionApiController::class, 'index']);
 
 
-Route::get('/products', [ProductApiController::class, 'index']);   
+Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
 
 Route::get('/wallets', [WalletApiController::class, 'index']);

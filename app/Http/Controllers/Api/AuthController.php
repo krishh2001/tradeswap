@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 
 class AuthController extends Controller
@@ -181,9 +183,72 @@ class AuthController extends Controller
     }
 
 
+    // Get Profile
+    public function profile(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile fetched successfully.',
+            'user' => [
+                'name'           => $user->name,
+                'email'          => $user->email,
+                'mobile_number'  => $user->mobile_number,
+                'profile_photo'  => $user->profile_photo
+                    ? asset('storage/profile_photos/' . $user->profile_photo)
+                    : null,
+            ]
+        ]);
+    }
 
 
-   
+    // Update Profile
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'name'           => 'required|string|max:255',
+            'email'          => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'mobile_number'  => ['required', 'digits:10', Rule::unique('users')->ignore($user->id)],
+            'profile_photo'  => 'nullable|image|max:2048', // Max 2MB
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->mobile_number = $request->mobile_number;
+
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($user->profile_photo && Storage::disk('public')->exists('profile_photos/' . $user->profile_photo)) {
+                Storage::disk('public')->delete('profile_photos/' . $user->profile_photo);
+            }
+
+            // Save new photo
+            $file = $request->file('profile_photo');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('profile_photos', $filename, 'public');
+            $user->profile_photo = $filename;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile updated successfully.',
+            'user' => [
+                'name'           => $user->name,
+                'email'          => $user->email,
+                'mobile_number'  => $user->mobile_number,
+                'profile_photo'  => $user->profile_photo
+                    ? asset('storage/profile_photos/' . $user->profile_photo)
+                    : null,
+            ]
+        ]);
+    }
+
+
     // ✅ Get Authenticated User
     public function user(Request $request)
     {
