@@ -146,11 +146,12 @@ class AuthController extends Controller
         // Fetch user and check soft-deletion
         $user = User::where($fieldType, $loginId)->first();
 
-        if (!$user) {
-            return response()->json([
-                'message' => "$errorField is not registered with us."
-            ], 404);
-        }
+       if (!$user) {
+    return response()->json([
+        'message' => "$errorField is not registered with us."
+    ], 400); // Bad Request
+}
+
 
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
