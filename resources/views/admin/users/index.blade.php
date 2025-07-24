@@ -15,7 +15,7 @@
                 </svg>
                 <input type="text" id="userSearch" placeholder="Search users...">
             </div>
-            <a href="{{ route('admin.users.create') }}" class="user-create-btn">+ Create</a>
+            {{-- <a href="{{ route('admin.users.create') }}" class="user-create-btn">+ Create</a> --}}
         </div>
 
         <div class="user-table-wrapper">

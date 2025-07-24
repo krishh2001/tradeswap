@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('mobile_number')->nullable()->unique();
             $table->string('referral_code')->nullable()->unique();
-            $table->date('date_of_joining')->nullable(); // ✅ Removed ->after()
+            $table->date('date_of_joining')->nullable(); 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('email_otp')->nullable();
             $table->boolean('is_email_verified')->default(false);
