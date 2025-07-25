@@ -185,23 +185,24 @@ class AuthController extends Controller
 
 
     // Get Profile
-    public function profile(Request $request)
-    {
-        $user = $request->user();
+   public function profile(Request $request)
+{
+    $user = $request->user();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Profile fetched successfully.',
-            'user' => [
-                'name'           => $user->name,
-                'email'          => $user->email,
-                'mobile_number'  => $user->mobile_number,
-                'profile_photo'  => $user->profile_photo
-                    ? asset('storage/profile_photos/' . $user->profile_photo)
-                    : null,
-            ]
-        ]);
-    }
+    return response()->json([
+        'status' => true,
+        'message' => 'Profile fetched successfully.',
+        'user' => [
+            'name'           => $user->name,
+            'email'          => $user->email,
+            'mobile_number'  => $user->mobile_number,
+            'profile_photo'  => $user->profile_photo
+                ? 'storage/profile_photos/' . $user->profile_photo
+                : null,
+        ]
+    ]);
+}
+
 
 
     // Update Profile
