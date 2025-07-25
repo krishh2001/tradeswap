@@ -197,7 +197,7 @@ class AuthController extends Controller
             'email'         => $user->email,
             'mobile_number' => $user->mobile_number,
             'profile_photo' => $user->profile_photo 
-                ? 'storage/profile_photos/' . $user->profile_photo 
+                ? 'profile_photos/' . $user->profile_photo 
                 : null,
         ]
     ]);
@@ -246,7 +246,7 @@ class AuthController extends Controller
                 'email'         => $user->email,
                 'mobile_number' => $user->mobile_number,
                 'profile_photo' => $user->profile_photo
-                    ? 'storage/profile_photos/' . $user->profile_photo
+                    ? 'profile_photos/' . $user->profile_photo
                     : null,
             ]
         ]);
