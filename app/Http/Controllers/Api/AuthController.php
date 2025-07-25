@@ -185,24 +185,23 @@ class AuthController extends Controller
 
 
     // Get Profile
-    public function profile(Request $request)
-    {
-        $user = $request->user();
+   public function profile(Request $request)
+{
+    $user = $request->user();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Profile fetched successfully.',
-            'user' => [
-                'name'           => $user->name,
-                'email'          => $user->email,
-                'mobile_number'  => $user->mobile_number,
-                'profile_photo'  => $user->profile_photo
-                    ? str_replace('profile_photos/', '', $user->profile_photo) // optional cleanup
-                    : null,
-            ]
-        ]);
-    }
-
+    return response()->json([
+        'status' => true,
+        'message' => 'Profile fetched successfully.',
+        'user' => [
+            'name'          => $user->name,
+            'email'         => $user->email,
+            'mobile_number' => $user->mobile_number,
+            'profile_photo' => $user->profile_photo 
+                ? 'storage/profile_photos/' . $user->profile_photo 
+                : null,
+        ]
+    ]);
+}
 
 
 
@@ -215,7 +214,7 @@ class AuthController extends Controller
             'name'          => 'required|string|max:255',
             'email'         => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'mobile_number' => ['required', 'digits:10', Rule::unique('users')->ignore($user->id)],
-            'profile_photo' => 'nullable|image|max:5120',
+            'profile_photo' => 'nullable|image|max:5120', // Max 5MB
         ]);
 
         $user->name = $request->name;
@@ -223,12 +222,18 @@ class AuthController extends Controller
         $user->mobile_number = $request->mobile_number;
 
         if ($request->hasFile('profile_photo')) {
-            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
-                Storage::disk('public')->delete($user->profile_photo);
+            // Delete old image if exists
+            if ($user->profile_photo && Storage::disk('public')->exists('profile_photos/' . $user->profile_photo)) {
+                Storage::disk('public')->delete('profile_photos/' . $user->profile_photo);
             }
 
-            // Save only the relative path like: profile_photos/xyz.jpg
-            $user->profile_photo = $request->file('profile_photo')->store('profile_photos', 'public');
+            // Store new image like in product controller
+            $file = $request->file('profile_photo');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('profile_photos', $filename, 'public');
+
+            // Save only filename
+            $user->profile_photo = $filename;
         }
 
         $user->save();
@@ -240,10 +245,13 @@ class AuthController extends Controller
                 'name'          => $user->name,
                 'email'         => $user->email,
                 'mobile_number' => $user->mobile_number,
-                'profile_photo' => $user->profile_photo ?? null,
-            ],
+                'profile_photo' => $user->profile_photo
+                    ? 'storage/profile_photos/' . $user->profile_photo
+                    : null,
+            ]
         ]);
     }
+
 
 
 
