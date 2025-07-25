@@ -14,7 +14,7 @@ return new class extends Migration
         // database/migrations/xxxx_xx_xx_create_payments_table.php
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            // $table->unsignedBigInteger('user_id');
             $table->string('plan');
             $table->decimal('amount', 10, 2);
             $table->string('payment_method');
