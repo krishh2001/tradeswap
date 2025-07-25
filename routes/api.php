@@ -55,6 +55,7 @@ Route::post('/order', [OrderApiController::class, 'store']); // Place new order
 // Example: /api/pages/privacy_policy
 // Example: /api/pages/terms_conditions 
 Route::get('/pages/{key}', [PageApiController::class, 'getPage']);
+
 Route::post('/submit-ticket', [SupportTicketController::class, 'store']);
 
 

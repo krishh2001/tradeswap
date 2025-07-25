@@ -22,7 +22,7 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             'plan' => 'required|string',
             'amount' => 'required|numeric',
             'payment_method' => 'required|string',
