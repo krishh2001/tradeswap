@@ -210,9 +210,9 @@ class AuthController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'name'           => 'required|string|max:255',
-            'email'          => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'mobile_number'  => ['required', 'digits:10', Rule::unique('users')->ignore($user->id)],
+            'name'          => 'required|string|max:255',
+            'email'         => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'mobile_number' => ['required', 'digits:10', Rule::unique('users')->ignore($user->id)],
             'profile_photo' => 'nullable|image|max:5120', // Max 5MB
         ]);
 
@@ -221,16 +221,13 @@ class AuthController extends Controller
         $user->mobile_number = $request->mobile_number;
 
         if ($request->hasFile('profile_photo')) {
-            // Delete old photo if exists
-            if ($user->profile_photo && Storage::disk('public')->exists('profile_photos/' . $user->profile_photo)) {
-                Storage::disk('public')->delete('profile_photos/' . $user->profile_photo);
+            // Delete old profile photo if exists
+            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
+                Storage::disk('public')->delete($user->profile_photo);
             }
 
-            // Save new photo
-            $file = $request->file('profile_photo');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('profile_photos', $filename, 'public');
-            $user->profile_photo = $filename;
+            // Store new photo and save the path (like: profile_photos/abc123.jpg)
+            $user->profile_photo = $request->file('profile_photo')->store('profile_photos', 'public');
         }
 
         $user->save();
@@ -239,17 +236,16 @@ class AuthController extends Controller
             'status' => true,
             'message' => 'Profile updated successfully.',
             'user' => [
-                'name'           => $user->name,
-                'email'          => $user->email,
-                'mobile_number'  => $user->mobile_number,
+                'name'          => $user->name,
+                'email'         => $user->email,
+                'mobile_number' => $user->mobile_number,
                 'profile_photo' => $user->profile_photo
-                    ? asset('storage/profile_photos/' . $user->profile_photo)
+                    ? 'storage/' . $user->profile_photo // correct relative path
                     : null,
-
-
-            ]
+            ],
         ]);
     }
+
 
 
     // ✅ Get Authenticated User
