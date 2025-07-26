@@ -56,8 +56,8 @@
                                         {{ ucfirst($ticket->status) }}
                                     </button>
                                 </form>
-                                <button class="btn-small btn-reply"
-                                    onclick="openReplyModal({{ $ticket->id }}, '{{ $ticket->user_email }}')">Reply</button>
+                                {{-- <button class="btn-small btn-reply"
+                                    onclick="openReplyModal({{ $ticket->id }}, '{{ $ticket->user_email }}')">Reply</button> --}}
                                 <button class="btn-small btn-delete"
                                     onclick="openDeleteModal({{ $ticket->id }})">Delete</button>
                             </td>
