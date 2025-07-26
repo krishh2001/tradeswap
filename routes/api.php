@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/update', [AuthController::class, 'updateProfile']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/support-tickets', [SupportTicketController::class, 'store']);
+
     
 });
 
@@ -57,7 +60,6 @@ Route::post('/order', [OrderApiController::class, 'store']); // Place new order
 // Example: /api/pages/terms_conditions 
 Route::get('/pages/{key}', [PageApiController::class, 'getPage']);
 
-Route::post('/support-tickets', [SupportTicketController::class, 'store']);
 
 
 Route::get('/payments', [ApiPaymentController::class, 'index']);
