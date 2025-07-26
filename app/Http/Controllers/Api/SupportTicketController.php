@@ -10,16 +10,26 @@ class SupportTicketController extends Controller
 {
     public function store(Request $request)
     {
+        // Ensure token is valid and user is authenticated
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Token missing or invalid.',
+            ], 401);
+        }
+
+        // Validate only subject and message (name/email will come from token)
         $request->validate([
-            'user_name'    => 'required|string|max:255',
-            'user_email'   => 'required|email',
-            'subject'      => 'required|string|max:255',
-            'message'      => 'required|string',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
         ]);
 
+        // Store ticket
         $ticket = SupportTicket::create([
-            'user_name'  => $request->user_name,
-            'user_email' => $request->user_email,
+            'user_name'  => $user->name,
+            'user_email' => $user->email,
             'subject'    => $request->subject,
             'message'    => $request->message,
             'status'     => 'pending',
