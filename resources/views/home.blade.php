@@ -72,7 +72,8 @@ body {
         }
 
         .logo img {
-            height: 40px;
+            height: 60px;
+            width: 115px;
             margin-right: 10px;
         }
 
@@ -1094,8 +1095,7 @@ footer {
     <!-- Navbar -->
     <nav id="navbar">
         <a href="#" class="logo">
-            <img src="images/Tradeswap-logo.gif" alt="Logo">
-            TradeSwap      
+            <img src="images/Tradeswap-logo.gif" alt="Logo">   
         </a>
 
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
