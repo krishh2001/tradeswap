@@ -74,9 +74,9 @@
                 <a href="{{ route('admin.supports.index') }}"><i class="fas fa-headset"></i> Support</a>
             </li>
 
-            <li class="{{ request()->is('admin/reports*') ? 'active' : '' }}">
+            {{-- <li class="{{ request()->is('admin/reports*') ? 'active' : '' }}">
                 <a href="{{ route('admin.reports.index') }}"><i class="fas fa-chart-line"></i> Reports</a>
-            </li>
+            </li> --}}
           
 
         </ul>
