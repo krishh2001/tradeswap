@@ -1094,8 +1094,8 @@ footer {
     <!-- Navbar -->
     <nav id="navbar">
         <a href="#" class="logo">
-            <img src="images/logo.jpg" alt="Logo">
-            TradeSwap
+            <img src="images/Tradeswap-logo.gif" alt="Logo">
+            TradeSwap      
         </a>
 
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
