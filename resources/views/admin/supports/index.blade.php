@@ -129,7 +129,7 @@
     <script>
         function openDeleteModal(id) {
             const form = document.getElementById('deleteForm');
-            form.action = '/admin/supports/' + id;
+            form.action = '{{ url('/admin/supports/') }}/' + id;
             document.getElementById('sliderDeleteModal').style.display = 'flex';
         }
 
