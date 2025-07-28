@@ -43,4 +43,9 @@ class User extends Authenticatable
             $this->attributes['password'] = Hash::make($value);
         }
     }
+
+    public function referredUsers()
+    {
+        return $this->hasMany(User::class, 'referred_by', 'referral_code');
+    }
 }

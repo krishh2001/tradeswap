@@ -347,4 +347,22 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+
+    public function referralUserCount(Request $request)
+{
+    $user = $request->user(); // current authenticated user
+
+    $totalReferredUsers = User::where('referred_by', $user->referral_code)->count();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Referral user count fetched successfully.',
+        'data' => [
+            'referral_code' => $user->referral_code,
+            'total_users_referred' => $totalReferredUsers,
+        ]
+    ]);
+}
+
 }
