@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\SupportTicket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -185,23 +189,23 @@ class AuthController extends Controller
 
 
     // Get Profile
-   public function profile(Request $request)
-{
-    $user = $request->user();
+    public function profile(Request $request)
+    {
+        $user = $request->user();
 
-    return response()->json([
-        'status' => true,
-        'message' => 'Profile fetched successfully.',
-        'user' => [
-            'name'          => $user->name,
-            'email'         => $user->email,
-            'mobile_number' => $user->mobile_number,
-            'profile_photo' => $user->profile_photo 
-                ? 'profile_photos/' . $user->profile_photo 
-                : null,
-        ]
-    ]);
-}
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile fetched successfully.',
+            'user' => [
+                'name'          => $user->name,
+                'email'         => $user->email,
+                'mobile_number' => $user->mobile_number,
+                'profile_photo' => $user->profile_photo
+                    ? 'profile_photos/' . $user->profile_photo
+                    : null,
+            ]
+        ]);
+    }
 
 
 
@@ -306,6 +310,42 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => 'An error occurred during logout.',
                 'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+    public function deleteAccount(Request $request)
+    {
+        $user = $request->user();
+
+        try {
+            // ✅ Delete all related user data
+            Order::where('user_id', $user->id)->delete();
+            Payment::where('user_id', $user->id)->delete();
+            SupportTicket::where('user_id', $user->id)->delete();
+
+            // ✅ Delete profile photo from storage if it exists
+            if ($user->profile_photo && Storage::disk('public')->exists('profile_photos/' . $user->profile_photo)) {
+                Storage::disk('public')->delete('profile_photos/' . $user->profile_photo);
+            }
+
+            // ✅ Delete access tokens
+            $user->tokens()->delete();
+
+            // ✅ Finally delete user
+            $user->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Your account and all associated data have been permanently deleted.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong while deleting the account.',
+                'error'   => $e->getMessage()
             ], 500);
         }
     }

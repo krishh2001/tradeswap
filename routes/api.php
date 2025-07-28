@@ -28,7 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/support-tickets', [SupportTicketController::class, 'store']);
 
-    
+    Route::delete('/delete-account', [AuthController::class, 'deleteAccount']);
+
 });
 
 
