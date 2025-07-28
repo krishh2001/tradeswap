@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\SubscriptionApiController;
 use App\Http\Controllers\Api\WalletApiController;
+use App\Http\Controllers\Api\BillRewardAPIController;
 
 
 
@@ -30,6 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/delete-account', [AuthController::class, 'deleteAccount']);
     Route::get('/referred-users', [AuthController::class, 'referredUsers']);
+
+
+   // Bill Reward Routes
+    Route::get('/bills', [BillRewardAPIController::class, 'index']);
+    Route::post('/bills', [BillRewardAPIController::class, 'store']);
 });
 
 

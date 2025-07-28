@@ -138,7 +138,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/', [BillRewardController::class, 'index'])->name('index');
             Route::get('{id}', [BillRewardController::class, 'show'])->name('view');
             Route::post('{id}/approve', [BillRewardController::class, 'approve'])->name('approve');
-            Route::post('{id}/discard', [BillRewardController::class, 'discard'])->name('discard');
+            Route::post('{id}/discard', [BillRewardController::class, 'discard'])->name('discard'); // fixed space issue
             Route::delete('{id}', [BillRewardController::class, 'destroy'])->name('delete');
         });
 

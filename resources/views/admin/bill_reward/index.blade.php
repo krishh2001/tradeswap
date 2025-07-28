@@ -4,8 +4,7 @@
     <div class="user-dashboard">
         <div class="search-create-row">
             <div class="search-box">
-                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <circle cx="11" cy="11" r="8" stroke-width="2" stroke="#888"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke="#888" />
                 </svg>
@@ -17,7 +16,7 @@
             <table class="user-table" id="billTable">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>#ID</th>
                         <th>Bill No</th>
                         <th>Customer</th>
                         <th>Amount</th>
@@ -34,26 +33,33 @@
                             <td>{{ $bill->user->name ?? 'N/A' }}</td>
                             <td>₹{{ number_format($bill->amount, 2) }}</td>
                             <td>
-                                @if($bill->status === 'pending')
-                                    <form action="{{ route('admin.bill_reward.approve', $bill->id) }}" method="POST">
+                                @if ($bill->status === 'pending')
+                                    <form action="{{ route('admin.bill_reward.approve', $bill->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         <input type="number" name="reward" class="cashback-input" placeholder="₹ Reward" required>
-                                        <div class="cashback-buttons">
-                                            <button type="submit" class="btn-approve">Approve</button>
+                                        <button type="submit" class="btn-approve">Approve</button>
                                     </form>
-                                    <form action="{{ route('admin.bill_reward.discard', $bill->id) }}" method="POST">
+                                    <form action="{{ route('admin.bill_reward.discard', $bill->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         <button type="submit" class="btn-discard">Discard</button>
                                     </form>
                                 @else
-                                    ₹{{ $bill->reward ?? '0' }} 
-                                    <br>
+                                    ₹{{ number_format($bill->reward, 2) ?? '0.00' }} <br>
                                     <span class="status-{{ $bill->status }}">{{ ucfirst($bill->status) }}</span>
                                 @endif
                             </td>
                             <td>
-                                @if($bill->bill_pdf)
-                                    <a href="{{ $bill->bill_pdf }}" target="_blank" class="btn-delete">View Bill</a>
+                                @if ($bill->bill_pdf)
+                                    @php
+                                        $extension = pathinfo($bill->bill_pdf, PATHINFO_EXTENSION);
+                                    @endphp
+                                    @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                        <img src="{{ asset($bill->bill_pdf) }}" alt="Bill Image" style="max-height: 100px;">
+                                    @elseif($extension === 'pdf')
+                                        <a href="{{ asset($bill->bill_pdf) }}" target="_blank" class="btn-delete">View PDF</a>
+                                    @else
+                                        <a href="{{ asset($bill->bill_pdf) }}" target="_blank" class="btn-delete">View File</a>
+                                    @endif
                                 @else
                                     N/A
                                 @endif
@@ -69,7 +75,7 @@
         </div>
     </div>
 
-    {{-- Delete Modal --}}
+    {{-- Delete Confirmation Modal --}}
     <div class="modal" id="sliderDeleteModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
@@ -86,13 +92,15 @@
         </div>
     </div>
 
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    {{-- DataTables CSS/JS --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+    {{-- Custom JS --}}
     <script>
         $(document).ready(function () {
-            $('.user-table').DataTable({
+            $('#billTable').DataTable({
                 paging: true,
                 ordering: true,
                 info: false,
@@ -100,11 +108,9 @@
                 lengthChange: false
             });
         });
-    </script>
-    <script>
+
         function openDeleteModal(id) {
-            const form = document.getElementById('deleteProductForm');
-            form.action = "{{ url('admin/bill-rewards') }}/" + id;
+            document.getElementById('deleteProductForm').action = "{{ url('admin/bill-reward') }}/" + id;
             document.getElementById('sliderDeleteModal').classList.add('show');
         }
 

@@ -10,7 +10,7 @@ class BillReward extends Model
     use HasFactory;
 
     protected $fillable = [
-        'bill_no', 'user_id', 'amount', 'reward', 'status', 'bill_pdf'
+        'bill_no', 'user_id', 'amount', 'reward', 'status', 'bill_pdf',
     ];
 
     public function user()
