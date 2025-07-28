@@ -19,6 +19,7 @@ class User extends Authenticatable
         'mobile_number',
         'password',
         'referral_code',
+        'referred_by',
         'email_otp',
         'is_email_verified',
         'wallet_balance',
