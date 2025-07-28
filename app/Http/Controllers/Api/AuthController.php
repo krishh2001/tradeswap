@@ -323,8 +323,6 @@ class AuthController extends Controller
         try {
             // ✅ Delete all related user data
             Order::where('user_id', $user->id)->delete();
-            Payment::where('user_id', $user->id)->delete();
-            SupportTicket::where('user_id', $user->id)->delete();
 
             // ✅ Delete profile photo from storage if it exists
             if ($user->profile_photo && Storage::disk('public')->exists('profile_photos/' . $user->profile_photo)) {
