@@ -337,7 +337,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Your account and all associated data have been permanently deleted.'
+                'message' => 'Your account has been permanently deleted.'
             ]);
         } catch (\Exception $e) {
             return response()->json([
