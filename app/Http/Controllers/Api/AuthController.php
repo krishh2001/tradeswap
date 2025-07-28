@@ -94,8 +94,7 @@ class AuthController extends Controller
             'mobile_number'     => $userData['mobile_number'],
             'password'          => $userData['password'],
             'referral_code'     => $referralCode,
-            'referred_by'       => $userData['referred_by'] ?? null,
-
+            'referred_by'       => $userData['referred_by'],
             'is_email_verified' => true,
             'email_verified_at' => now(),
             'date_of_joining'   => now(),
