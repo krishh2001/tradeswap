@@ -72,4 +72,3 @@ Route::get('/sliders', [SliderApiController::class, 'index']);
 Route::get('/reports', [ReportApiController::class, 'index']);
 
 Route::post('/support-ticket', [SupportTicketController::class, 'store']);
-

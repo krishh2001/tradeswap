@@ -44,8 +44,8 @@ class User extends Authenticatable
         }
     }
 
-    public function referredUsers()
+    public function referrals()
     {
-        return $this->hasMany(User::class, 'referred_by', 'referral_code');
+        return $this->hasMany(User::class, 'referred_by');
     }
 }

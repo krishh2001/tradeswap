@@ -349,20 +349,19 @@ class AuthController extends Controller
     }
 
 
-    public function referralUserCount(Request $request)
-{
-    $user = $request->user(); // current authenticated user
+    public function referredUsers(Request $request)
+    {
+        $user = $request->user();
 
-    $totalReferredUsers = User::where('referred_by', $user->referral_code)->count();
+        $totalReferredUsers = User::where('referred_by', $user->referral_code)->count();
 
-    return response()->json([
-        'status' => true,
-        'message' => 'Referral user count fetched successfully.',
-        'data' => [
-            'referral_code' => $user->referral_code,
-            'total_users_referred' => $totalReferredUsers,
-        ]
-    ]);
-}
-
+        return response()->json([
+            'status' => true,
+            'message' => 'Referral user count fetched successfully.',
+            'data' => [
+                'referral_code' => $user->referral_code,
+                'total_users_referred' => $totalReferredUsers,
+            ]
+        ]);
+    }
 }
