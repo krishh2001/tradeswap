@@ -45,7 +45,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'mobile_number' => $request->mobile_number,
-            'password' => $request->password, // ✅ plain password
+            'password' => $request->password,
+            'referred_by' => $request->referral_code ?? null
         ], now()->addMinutes(5));
 
 
@@ -93,6 +94,8 @@ class AuthController extends Controller
             'mobile_number'     => $userData['mobile_number'],
             'password'          => $userData['password'],
             'referral_code'     => $referralCode,
+            'referred_by'       => $userData['referred_by'] ?? null,
+
             'is_email_verified' => true,
             'email_verified_at' => now(),
             'date_of_joining'   => now(),
