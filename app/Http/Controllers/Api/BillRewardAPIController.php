@@ -56,8 +56,7 @@ class BillRewardAPIController extends Controller
             'amount' => $request->amount,
             'reward' => 0,
             'status' => 'pending',
-            'bill_pdf' => $path ?? null,
-
+            'bill_pdf' => $path ? 'storage/' . $path : null, // Saved as URL path
         ]);
 
         // No need to modify it to asset() if you want to keep relative path only
