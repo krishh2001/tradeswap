@@ -43,7 +43,7 @@
     @if ($bill->bill_pdf)
         <div class="form-group">
             <label>Bill PDF</label>
-            <p><a href="{{ asset('public/storage/' . $bill->bill_pdf) }}" target="_blank" class="btn-delete">View PDF</a></p>
+            <p><a href="{{ asset('public/' . $bill->bill_pdf) }}" target="_blank" class="btn-delete">View PDF</a></p>
         </div>
     @endif
 
