@@ -5,6 +5,10 @@
     <h2>Bill Reward Details</h2>
 
     <div class="form-group">
+        <label>Plan Name</label>
+        <p class="form-value">{{$bill->plan ?? 'N/A'}}</p>
+
+    <div class="form-group">
         <label>User Name</label>
         <p class="form-value">{{ $bill->user->name ?? 'N/A' }}</p>
     </div>

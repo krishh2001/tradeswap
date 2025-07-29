@@ -18,6 +18,7 @@
                 <thead>
                     <tr>
                         <th>#ID</th>
+                        <th>Plan</th>
                         <th>Bill No</th>
                         <th>Customer</th>
                         <th>Amount</th>
@@ -30,6 +31,7 @@
                     @foreach ($bills as $index => $bill)
                         <tr>
                             <td>{{ $index + 1 }}</td>
+                            <td>{{ $bill->plan }}</td>
                             <td>{{ $bill->bill_no }}</td>
                             <td>{{ $bill->user->name ?? 'N/A' }}</td>
                             <td>₹{{ number_format($bill->amount, 2) }}</td>

@@ -24,6 +24,7 @@ class BillRewardAPIController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'plan' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
             'bill_pdf' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
@@ -45,6 +46,8 @@ class BillRewardAPIController extends Controller
 
         // Save record
         $bill = BillReward::create([
+    'plan' => $request->plan,
+
             'bill_no' => $billNo,
             'user_id' => $user->id,
             'amount' => $request->amount,

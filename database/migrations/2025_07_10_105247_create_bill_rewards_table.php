@@ -10,6 +10,7 @@ class CreateBillRewardsTable extends Migration
     {
         Schema::create('bill_rewards', function (Blueprint $table) {
             $table->id();
+            $table->string('plan')->nullable();
             $table->string('bill_no')->unique();
             $table->unsignedBigInteger('user_id');
             $table->decimal('amount', 10, 2);
