@@ -59,8 +59,9 @@ class BillRewardAPIController extends Controller
             'bill_pdf' => $path ? 'storage/' . $path : null, // Saved as URL path
         ]);
 
-        // Add full URL in response
-        $bill->bill_pdf = $bill->bill_pdf ? asset($bill->bill_pdf) : null;
+        // No need to modify it to asset() if you want to keep relative path only
+        $bill->bill_pdf = $bill->bill_pdf;
+
 
         return response()->json([
             'status' => true,
