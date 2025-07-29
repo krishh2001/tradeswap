@@ -30,21 +30,31 @@ class BillRewardAPIController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized. Token missing or invalid.'
+            ], 401);
+        }
+
         $request->validate([
             'plan' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
             'bill_pdf' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $user = Auth::user();
-
         $filename = null;
+        $path = null;
+
         if ($request->hasFile('bill_pdf')) {
             $file = $request->file('bill_pdf');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/bills', $filename, 'public'); // stored at: storage/app/public/uploads/bills/
+            $path = $file->storeAs('uploads/bills', $filename, 'public');
         }
 
+        // Generate unique bill number
         do {
             $billNo = 'BILL' . now()->format('Ymd') . strtoupper(Str::random(4));
         } while (BillReward::where('bill_no', $billNo)->exists());
@@ -56,12 +66,10 @@ class BillRewardAPIController extends Controller
             'amount' => $request->amount,
             'reward' => 0,
             'status' => 'pending',
-            'bill_pdf' => $path ? 'storage/' . $path : null, // Saved as URL path
+            'bill_pdf' => $path ? 'storage/' . $path : null,
         ]);
 
-        // No need to modify it to asset() if you want to keep relative path only
         $bill->bill_pdf = $bill->bill_pdf;
-
 
         return response()->json([
             'status' => true,
