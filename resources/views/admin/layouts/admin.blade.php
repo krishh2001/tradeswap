@@ -61,7 +61,7 @@
 
             <li class="{{ request()->is('admin/bill-reward*') ? 'active' : '' }}">
                 <a href="{{ route('admin.bill_reward.index') }}">
-                    <i class="fas fa-file-invoice-dollar"></i> Bill Details-Reward
+                    <i class="fas fa-file-invoice-dollar"></i> Subscription Reward
                 </a>
             </li>
 
