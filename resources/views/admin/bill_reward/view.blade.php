@@ -7,7 +7,7 @@
     <div class="form-group">
         <label>Plan Name</label>
         <p class="form-value">{{$bill->plan ?? 'N/A'}}</p>
-
+    </div>
     <div class="form-group">
         <label>User Name</label>
         <p class="form-value">{{ $bill->user->name ?? 'N/A' }}</p>
