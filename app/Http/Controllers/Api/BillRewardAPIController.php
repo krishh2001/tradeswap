@@ -46,14 +46,13 @@ class BillRewardAPIController extends Controller
 
         // Save record
         $bill = BillReward::create([
-    'plan' => $request->plan,
-
+            'plan' => $request->plan,
             'bill_no' => $billNo,
             'user_id' => $user->id,
             'amount' => $request->amount,
             'reward' => 0,
             'status' => 'pending',
-            'bill_pdf' => $path ? '/' . $path : null,
+            'bill_pdf' => $path ? 'storage/' . $path : null,
         ]);
 
         return response()->json([
