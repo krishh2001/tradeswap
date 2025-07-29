@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -14,6 +15,12 @@ class BillRewardAPIController extends Controller
     {
         $user = Auth::user();
         $bills = BillReward::where('user_id', $user->id)->latest()->get();
+
+        // Append full image URL
+        $bills->map(function ($bill) {
+            $bill->bill_pdf = $bill->bill_pdf ? asset($bill->bill_pdf) : null;
+            return $bill;
+        });
 
         return response()->json([
             'status' => true,
@@ -31,20 +38,17 @@ class BillRewardAPIController extends Controller
 
         $user = Auth::user();
 
-        // Upload file
         $filename = null;
         if ($request->hasFile('bill_pdf')) {
             $file = $request->file('bill_pdf');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('uploads/bills', $filename, 'public');
+            $path = $file->storeAs('uploads/bills', $filename, 'public'); // stored at: storage/app/public/uploads/bills/
         }
 
-        // Generate unique bill number
         do {
             $billNo = 'BILL' . now()->format('Ymd') . strtoupper(Str::random(4));
         } while (BillReward::where('bill_no', $billNo)->exists());
 
-        // Save record
         $bill = BillReward::create([
             'plan' => $request->plan,
             'bill_no' => $billNo,
@@ -52,8 +56,11 @@ class BillRewardAPIController extends Controller
             'amount' => $request->amount,
             'reward' => 0,
             'status' => 'pending',
-            'bill_pdf' => $path ? 'storage/' . $path : null,
+            'bill_pdf' => $path ? 'storage/' . $path : null, // Saved as URL path
         ]);
+
+        // Add full URL in response
+        $bill->bill_pdf = $bill->bill_pdf ? asset($bill->bill_pdf) : null;
 
         return response()->json([
             'status' => true,

@@ -62,7 +62,7 @@
             @if ($bill->bill_pdf)
                 @php
                     $extension = pathinfo($bill->bill_pdf, PATHINFO_EXTENSION);
-                    $fileUrl = asset('public/' . $bill->bill_pdf); // Ensure public prefix
+                    $fileUrl = url('public/' . $bill->bill_pdf); // Add 'public/' prefix manually
                 @endphp
 
                 <a href="{{ $fileUrl }}" target="_blank" class="btn-delete">View</a>
