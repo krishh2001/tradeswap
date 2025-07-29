@@ -34,8 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
    // Bill Reward Routes
-    Route::get('/bills', [BillRewardAPIController::class, 'index']);
-    Route::post('/bills', [BillRewardAPIController::class, 'store']);
+    Route::get('/buysubscription', [BillRewardAPIController::class, 'index']);
+    Route::post('/buysubscription', [BillRewardAPIController::class, 'store']);
 });
 
 
