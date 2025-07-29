@@ -50,7 +50,7 @@ class BillRewardAPIController extends Controller
             'amount' => $request->amount,
             'reward' => 0,
             'status' => 'pending',
-            'bill_pdf' => $path ? 'storage/' . $path : null,
+            'bill_pdf' => $path ? '/' . $path : null,
         ]);
 
         return response()->json([

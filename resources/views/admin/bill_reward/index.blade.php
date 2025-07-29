@@ -4,7 +4,8 @@
     <div class="user-dashboard">
         <div class="search-create-row">
             <div class="search-box">
-                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor">
                     <circle cx="11" cy="11" r="8" stroke-width="2" stroke="#888"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke="#888" />
                 </svg>
@@ -34,45 +35,49 @@
                             <td>₹{{ number_format($bill->amount, 2) }}</td>
                             <td>
                                 @if ($bill->status === 'pending')
-                                    <form action="{{ route('admin.bill_reward.approve', $bill->id) }}" method="POST" style="display:inline-block;">
+                                    <form action="{{ route('admin.bill_reward.approve', $bill->id) }}" method="POST"
+                                        style="display: flex; flex-direction: column; gap: 6px;">
                                         @csrf
-                                        <input type="number" name="reward" class="cashback-input" placeholder="₹ Reward" required>
-                                        <button type="submit" class="btn-approve">Approve</button>
+                                        <input type="number" name="reward" class="cashback-input" placeholder="₹ Reward"
+                                            required style="width: 100%; padding: 6px;">
+
+                                        <div style="display: flex; gap: 8px; justify-content: center;">
+                                            <button type="submit" class="btn-approve">Approve</button>
                                     </form>
-                                    <form action="{{ route('admin.bill_reward.discard', $bill->id) }}" method="POST" style="display:inline-block;">
+
+                                    <form action="{{ route('admin.bill_reward.discard', $bill->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn-discard">Discard</button>
                                     </form>
-                                @else
-                                    ₹{{ number_format($bill->reward, 2) ?? '0.00' }} <br>
-                                    <span class="status-{{ $bill->status }}">{{ ucfirst($bill->status) }}</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if ($bill->bill_pdf)
-                                    @php
-                                        $extension = pathinfo($bill->bill_pdf, PATHINFO_EXTENSION);
-                                    @endphp
-                                    @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                                        <img src="{{ asset($bill->bill_pdf) }}" alt="Bill Image" style="max-height: 100px;">
-                                    @elseif($extension === 'pdf')
-                                        <a href="{{ asset($bill->bill_pdf) }}" target="_blank" class="btn-delete">View PDF</a>
-                                    @else
-                                        <a href="{{ asset($bill->bill_pdf) }}" target="_blank" class="btn-delete">View File</a>
-                                    @endif
-                                @else
-                                    N/A
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.bill_reward.view', $bill->id) }}" class="btn-view">View</a>
-                                <button class="btn-delete" onclick="openDeleteModal({{ $bill->id }})">Delete</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
         </div>
+    @else
+        ₹{{ number_format($bill->reward, 2) ?? '0.00' }} <br>
+        <span class="status-{{ $bill->status }}">{{ ucfirst($bill->status) }}</span>
+        @endif
+        </td>
+
+        <td>
+            @if ($bill->bill_pdf)
+                @php
+                    $extension = pathinfo($bill->bill_pdf, PATHINFO_EXTENSION);
+                    $fileUrl = asset('public/' . $bill->bill_pdf); // Ensure public prefix
+                @endphp
+
+                <a href="{{ $fileUrl }}" target="_blank" class="btn-delete">View</a>
+            @else
+                N/A
+            @endif
+        </td>
+
+        <td>
+            <a href="{{ route('admin.bill_reward.view', $bill->id) }}" class="btn-view">View</a>
+            <button class="btn-delete" onclick="openDeleteModal({{ $bill->id }})">Delete</button>
+        </td>
+        </tr>
+        @endforeach
+        </tbody>
+        </table>
+    </div>
     </div>
 
     {{-- Delete Confirmation Modal --}}
@@ -99,7 +104,7 @@
 
     {{-- Custom JS --}}
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#billTable').DataTable({
                 paging: true,
                 ordering: true,
