@@ -39,22 +39,11 @@ class WalletApiController extends Controller
             ]);
         }
 
-        $latestBill = $user->billRewards()->latest()->first();
-
-        if (!$latestBill) {
-            return response()->json([
-                'success' => true,
-                'message' => 'No subscription found for this user.',
-                'data' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'status' => $user->status,
-                    'wallet_balance' => $user->wallet_balance,
-                    'remaining_days' => null,
-                ]
-            ]);
-        }
+        // Get latest approved bill
+        $latestBill = $user->billRewards()
+            ->where('status', 'approved') // Only consider approved subscriptions
+            ->latest()
+            ->first();
 
         return response()->json([
             'success' => true,
@@ -64,7 +53,8 @@ class WalletApiController extends Controller
                 'email' => $user->email,
                 'status' => $user->status,
                 'wallet_balance' => $user->wallet_balance,
-                'remaining_days' => $latestBill->remaining_days,
+                'plan' => $latestBill ? $latestBill->plan : null, // <-- Add this line
+                'remaining_days' => $latestBill ? $latestBill->remaining_days : null,
             ]
         ]);
     }

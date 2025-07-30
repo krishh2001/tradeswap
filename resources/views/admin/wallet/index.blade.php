@@ -21,7 +21,7 @@
                         <th>#</th>
                         <th>User</th>
                         <th>Email</th>
-                        <th>Wallet Balance</th>
+                        <th>Rewards</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
