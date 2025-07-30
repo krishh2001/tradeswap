@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\BillReward;
 
-class BillRewardAPIController extends Controller
+class BuySubscriptionAPIController extends Controller
 {
     public function index()
     {

@@ -49,4 +49,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(User::class, 'referred_by');
     }
+
+  public function billRewards()
+{
+    return $this->hasMany(BillReward::class);
+}
+
+public function subscription()
+{
+    return $this->belongsTo(Subscription::class, 'subscription_id');
+}
+
+
+
 }

@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\SubscriptionApiController;
 use App\Http\Controllers\Api\WalletApiController;
-use App\Http\Controllers\Api\BillRewardAPIController;
+use App\Http\Controllers\Api\BuySubscriptionAPIController;
 
 
 
@@ -33,9 +33,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/referred-users', [AuthController::class, 'referredUsers']);
 
 
-   // Bill Reward Routes
-    Route::get('/buysubscription', [BillRewardAPIController::class, 'index']);
-    Route::post('/buysubscription', [BillRewardAPIController::class, 'store']);
+    // Bill Reward Routes
+    Route::get('/buysubscription', [BuySubscriptionAPIController::class, 'index']);
+    Route::post('/buysubscription', [BuySubscriptionAPIController::class, 'store']);
+
+
+        Route::get('/rewards', [WalletApiController::class, 'show']);
+
 });
 
 
@@ -53,8 +57,7 @@ Route::get('/subscriptions', [SubscriptionApiController::class, 'index']);
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
 
-Route::get('/wallets', [WalletApiController::class, 'index']);
-Route::get('/wallets/{id}', [WalletApiController::class, 'show']);
+
 
 
 
