@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\BillReward; // ✅ Corrected model name
 
 class WalletApiController extends Controller
 {
-    // Return all users (admin use-case, optional)
     public function index()
     {
         $users = User::select('id', 'name', 'email', 'status', 'wallet_balance')->get();
@@ -19,10 +19,9 @@ class WalletApiController extends Controller
         ]);
     }
 
-    // Return wallet info of the authenticated user
     public function show()
     {
-        $user = Auth::user(); // Gets user from token
+        $user = Auth::user();
 
         if (!$user) {
             return response()->json([
@@ -31,6 +30,8 @@ class WalletApiController extends Controller
             ], 401);
         }
 
+        $latestBill = $user->billRewards()->latest()->first();
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -38,7 +39,8 @@ class WalletApiController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'status' => $user->status,
-                'wallet_balance' => $user->wallet_balance
+                'wallet_balance' => $user->wallet_balance,
+                'remaining_days' => $latestBill ? $latestBill->remaining_days : null,
             ]
         ]);
     }

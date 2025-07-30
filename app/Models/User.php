@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use App\Models\BillReward;
+
+
 
 class User extends Authenticatable
 {
@@ -50,16 +53,8 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'referred_by');
     }
 
-  public function billRewards()
-{
-    return $this->hasMany(BillReward::class);
-}
-
-public function subscription()
-{
-    return $this->belongsTo(Subscription::class, 'subscription_id');
-}
-
-
-
+    public function billRewards()
+    {
+        return $this->hasMany(BillReward::class, 'user_id');
+    }
 }

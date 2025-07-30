@@ -43,6 +43,8 @@ class BuySubscriptionAPIController extends Controller
             'plan' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
             'bill_pdf' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'remaining_days' => 'required|integer|min:1',
+
         ]);
 
         $filename = null;
@@ -67,6 +69,8 @@ class BuySubscriptionAPIController extends Controller
             'reward' => 0,
             'status' => 'pending',
             'bill_pdf' => $path ? 'storage/' . $path : null,
+            'remaining_days' => $request->remaining_days,
+
         ]);
 
         $bill->bill_pdf = $bill->bill_pdf;

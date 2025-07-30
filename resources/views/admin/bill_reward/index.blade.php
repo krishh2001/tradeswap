@@ -35,6 +35,7 @@
                             <td>{{ $bill->bill_no }}</td>
                             <td>{{ $bill->user->name ?? 'N/A' }}</td>
                             <td>₹{{ number_format($bill->amount, 2) }}</td>
+                            
                             <td>
                                 @if ($bill->status === 'pending')
                                     <form action="{{ route('admin.bill_reward.approve', $bill->id) }}" method="POST"

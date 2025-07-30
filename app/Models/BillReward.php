@@ -16,8 +16,13 @@ class BillReward extends Model
         'amount',
         'reward',
         'bill_pdf',
+        'remaining_days', 
         'status',
+        'starts_at',
+        'ends_at',
     ];
+
+    protected $dates = ['starts_at', 'ends_at'];
 
     public function user()
     {
