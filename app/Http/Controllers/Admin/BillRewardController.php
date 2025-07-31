@@ -30,7 +30,8 @@ public function approve(Request $request, $id)
     $cashback = $request->cashback;
 
     if ($bill->status === 'approved') {
-        return response()->json(['success' => false, 'message' => 'Already approved.']);
+                return redirect()->route('admin.reward_bill.index')->with('success', 'Already Approved.');
+
     }
 
     // Step 1: Update reward bill
