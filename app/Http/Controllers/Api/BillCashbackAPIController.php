@@ -45,6 +45,7 @@ class BillCashbackAPIController extends Controller
                 'message'     => 'Bill uploaded successfully.',
                 'bill_number' => $bill->bill_number,
                 'cashback'    => 0,
+                'file_url'    => asset('storage/' . $filename), 
             ]);
         } catch (ValidationException $e) {
             return response()->json([

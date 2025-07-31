@@ -125,7 +125,7 @@
             let cashback = document.getElementById('cashback_' + id).value;
             if (cashback === '') return alert('Please enter cashback amount');
 
-            fetch(`/admin/bill-cashback/approve/${id}`, {
+            fetch(`{{ url('/admin/bill-cashback/approve') }}/${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -142,7 +142,7 @@
         }
 
         function discardCashback(id) {
-            fetch(`/admin/reward-bill/discard/${id}`, {
+            fetch(`{{ url('/admin/reward-bill/discard') }}/${id}`, {
 
                     method: 'POST',
                     headers: {
