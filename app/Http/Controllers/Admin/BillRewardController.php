@@ -35,8 +35,6 @@ public function approve(Request $request, $id)
 }
 
 
-
-
    public function discardCashback($id)
 {
     $reward = RewardBill::findOrFail($id);

@@ -56,7 +56,7 @@
                                 @if ($bill->file)
                                     @php
                                         $extension = pathinfo($bill->file, PATHINFO_EXTENSION);
-                                        $fileUrl = url('public/' . $bill->file); // Add 'public/' prefix manually
+                                        $fileUrl = url('public/storage/' . $bill->file); // Add 'public/' prefix manually
                                     @endphp
 
                                     <a href="{{ $fileUrl }}" target="_blank" class="btn-delete">View</a>
