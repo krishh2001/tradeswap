@@ -16,70 +16,75 @@
     <div class="sidebar">
         <h2>Trade-Swap</h2>
         <ul class="nav-links">
-            <li class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-            </li>
-            <li class="{{ request()->is('admin/users*') ? 'active' : '' }}">
-                <a href="{{ route('admin.users.index') }}"><i class="fas fa-user"></i>Users</a>
-            </li>
+    <li class="{{ request()->is('admin/dashboard*') ? 'active' : '' }}">
+        <a href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+    </li>
 
-              <li class="{{ request()->is('admin/subscription*') ? 'active' : '' }}">
-                <a href="{{ route('admin.subscription.index') }}"><i class="fas fa-user-check"></i>Subscriptions</a>
-            </li>
+    <li class="{{ request()->is('admin/users*') ? 'active' : '' }}">
+        <a href="{{ route('admin.users.index') }}"><i class="fas fa-user"></i>Users</a>
+    </li>
 
-            <li class="{{ request()->is('admin/product*') ? 'active' : '' }}">
-                <a href="{{ route('admin.product.index') }}"><i class="fas fa-box-open"></i> Products</a>
-            </li>
+    <li class="{{ request()->is('admin/subscription*') ? 'active' : '' }}">
+        <a href="{{ route('admin.subscription.index') }}"><i class="fas fa-user-check"></i>Subscriptions</a>
+    </li>
 
-              <li class="{{ request()->is('admin/orders*') ? 'active' : '' }}">
-                <a href="{{ route('admin.orders.index') }}"><i class="fas fa-file-invoice-dollar"></i> Orders</a>
-            </li>
+    <li class="{{ request()->is('admin/product*') ? 'active' : '' }}">
+        <a href="{{ route('admin.product.index') }}"><i class="fas fa-box-open"></i> Products</a>
+    </li>
 
-            <li class="{{ request()->is('admin/withdraw_request*') ? 'active' : '' }}">
-                <a href="{{ route('admin.withdraw_request.index') }}"><i class="fas fa-user-check"></i>Withdraw Request</a>
-            </li>
+    <li class="{{ request()->is('admin/orders*') ? 'active' : '' }}">
+        <a href="{{ route('admin.orders.index') }}"><i class="fas fa-file-invoice-dollar"></i> Orders</a>
+    </li>
 
-            <li class="{{ request()->is('admin/coupons*') ? 'active' : '' }}">
-                <a href="{{ route('admin.coupons.index') }}">
-                    <i class="fas fa-tags"></i> Coupons
-                </a>
-            </li>
+    <li class="{{ request()->is('admin/withdraw_request*') ? 'active' : '' }}">
+        <a href="{{ route('admin.withdraw_request.index') }}"><i class="fas fa-user-check"></i>Withdraw Request</a>
+    </li>
 
-          
-            <li class="{{ request()->is('admin/payments*') ? 'active' : '' }}">
-                <a href="{{ route('admin.payments.index') }}">
-                    <i class="fas fa-credit-card"></i> Payments
-                </a>
-            </li>
+    <li class="{{ request()->is('admin/coupons*') ? 'active' : '' }}">
+        <a href="{{ route('admin.coupons.index') }}">
+            <i class="fas fa-tags"></i> Coupons
+        </a>
+    </li>
 
+    {{-- 
+    <li class="{{ request()->is('admin/payments*') ? 'active' : '' }}">
+        <a href="{{ route('admin.payments.index') }}">
+            <i class="fas fa-credit-card"></i> Payments
+        </a>
+    </li> 
+    --}}
 
-            <li class="{{ request()->is('admin/bill-cashback*') ? 'active' : '' }}">
-                <a href="{{ route('admin.bill_cashback.index') }}">
-                    <i class="fas fa-file-invoice-dollar"></i> Bill Details-Cashback
-                </a>
-            </li>
+    <li class="{{ request()->is('admin/bill-cashback*') ? 'active' : '' }}">
+        <a href="{{ route('admin.bill_cashback.index') }}">
+            <i class="fas fa-file-invoice-dollar"></i> Bill Details-Cashback
+        </a>
+    </li>
+    <li class="{{ request()->is('admin/reward-bill*') ? 'active' : '' }}">
+        <a href="{{ route('admin.reward_bill.index') }}">
+            <i class="fas fa-file-invoice-dollar"></i> Bill Details-Reward
+        </a>
+    </li>
 
-            <li class="{{ request()->is('admin/bill-reward*') ? 'active' : '' }}">
-                <a href="{{ route('admin.bill_reward.index') }}">
-                    <i class="fas fa-file-invoice-dollar"></i> Subscription Reward
-                </a>
-            </li>
+    <li class="{{ request()->is('admin/sub_reward*') ? 'active' : '' }}">
+        <a href="{{ route('admin.sub_reward.index') }}">
+            <i class="fas fa-file-invoice-dollar"></i> Subscription Reward
+        </a>
+    </li>
 
+    <li class="{{ request()->is('admin/wallet*') ? 'active' : '' }}">
+        <a href="{{ route('admin.wallet.index') }}"><i class="fas fa-wallet"></i> Wallet</a>
+    </li>
 
-            <li class="{{ request()->is('admin/wallet*') ? 'active' : '' }}">
-                <a href="{{ route('admin.wallet.index') }}"><i class="fas fa-wallet"></i> Wallet</a>
-            </li>
+    <li class="{{ request()->is('admin/supports*') ? 'active' : '' }}">
+        <a href="{{ route('admin.supports.index') }}"><i class="fas fa-headset"></i> Support</a>
+    </li>
 
-              <li class="{{ request()->is('admin/support*') ? 'active' : '' }}">
-                <a href="{{ route('admin.supports.index') }}"><i class="fas fa-headset"></i> Support</a>
-            </li>
-
-            {{-- <li class="{{ request()->is('admin/reports*') ? 'active' : '' }}">
-                <a href="{{ route('admin.reports.index') }}"><i class="fas fa-chart-line"></i> Reports</a>
-            </li> --}}
-          
-
-        </ul>
+    {{-- 
+    <li class="{{ request()->is('admin/reports*') ? 'active' : '' }}">
+        <a href="{{ route('admin.reports.index') }}"><i class="fas fa-chart-line"></i> Reports</a>
+    </li> 
+    --}}
+</ul>
 
         <div class="dropdown">
             <div class="dropdown-toggle">

@@ -46,14 +46,14 @@
 
     @if ($bill->bill_pdf)
         <div class="form-group">
-            <label>Bill PDF</label>
-            <p><a href="{{ asset('public/' . $bill->bill_pdf) }}" target="_blank" class="btn-delete">View PDF</a></p>
+            <label>Bill </label>
+            <p><a href="{{ asset('public/' . $bill->bill_pdf) }}" target="_blank" class="btn-delete">View Bill</a></p>
         </div>
     @endif
 
    
 
     <br>
-    <a href="{{ route('admin.bill_reward.index') }}" class="btn-back">Back to List</a>
+    <a href="{{ route('admin.sub_reward.index') }}" class="btn-back">Back to List</a>
 </div>
 @endsection

@@ -38,7 +38,7 @@
                             
                             <td>
                                 @if ($bill->status === 'pending')
-                                    <form action="{{ route('admin.bill_reward.approve', $bill->id) }}" method="POST"
+                                    <form action="{{ route('admin.sub_reward.approve', $bill->id) }}" method="POST"
                                         style="display: flex; flex-direction: column; gap: 6px;">
                                         @csrf
                                         <input type="number" name="reward" class="cashback-input" placeholder="₹ Reward"
@@ -48,7 +48,7 @@
                                             <button type="submit" class="btn-approve">Approve</button>
                                     </form>
 
-                                    <form action="{{ route('admin.bill_reward.discard', $bill->id) }}" method="POST">
+                                    <form action="{{ route('admin.sub_reward.discard', $bill->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn-discard">Discard</button>
                                     </form>
@@ -73,7 +73,7 @@
         </td>
 
         <td>
-            <a href="{{ route('admin.bill_reward.view', $bill->id) }}" class="btn-view">View</a>
+            <a href="{{ route('admin.sub_reward.view', $bill->id) }}" class="btn-view">View</a>
             <button class="btn-delete" onclick="openDeleteModal({{ $bill->id }})">Delete</button>
         </td>
         </tr>

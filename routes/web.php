@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\EditProfileController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BillCashbackController;
 use App\Http\Controllers\Admin\BillRewardController;
+use App\Http\Controllers\Admin\SubRewardController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SupportController;
@@ -132,14 +133,24 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/delete/{id}', [BillCashbackController::class, 'destroy']);
         });
 
-
-        // ✅ Bill Details reward
-        Route::prefix('bill-reward')->name('bill_reward.')->group(function () {
+        // ✅ Bill Details
+        Route::prefix('reward-bill')->name('reward_bill.')->group(function () {
             Route::get('/', [BillRewardController::class, 'index'])->name('index');
-            Route::get('{id}', [BillRewardController::class, 'show'])->name('view');
-            Route::post('{id}/approve', [BillRewardController::class, 'approve'])->name('approve');
-            Route::post('{id}/discard', [BillRewardController::class, 'discard'])->name('discard'); // fixed space issue
-            Route::delete('{id}', [BillRewardController::class, 'destroy'])->name('delete');
+            Route::get('/view/{id}', [BillRewardController::class, 'view'])->name('view');
+            Route::post('/approve/{id}', [BillRewardController::class, 'approve'])->name('approve');
+            Route::post('/discard/{id}', [BillRewardController::class, 'discardCashback'])->name('discard');
+            Route::delete('/delete/{id}', [BillRewardController::class, 'destroy'])->name('destroy');
+        });
+
+
+
+        // ✅ subscription_reward Details 
+        Route::prefix('sub_reward')->name('sub_reward.')->group(function () {
+            Route::get('/', [SubRewardController::class, 'index'])->name('index');
+            Route::get('{id}', [SubRewardController::class, 'show'])->name('view');
+            Route::post('{id}/approve', [SubRewardController::class, 'approve'])->name('approve');
+            Route::post('{id}/discard', [SubRewardController::class, 'discard'])->name('discard'); // fixed space issue
+            Route::delete('{id}', [SubRewardController::class, 'destroy'])->name('delete');
         });
 
 

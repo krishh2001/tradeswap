@@ -21,29 +21,32 @@
                         <th>#</th>
                         <th>Bill No</th>
                         <th>Customer</th>
-                        {{-- <th>Amount</th> --}}
-                        <th>Cashback</th>
+                        <th>Reward</th>
                         <th>View Bill</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($bills as $index => $bill)
+                    @foreach ($reward_bills as $bill)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $bill->id }}</td>
                             <td>{{ $bill->bill_number }}</td>
                             <td>{{ $bill->user->name ?? 'N/A' }}</td>
-                            {{-- <td>₹{{ number_format($bill->amount, 2) }}</td> --}}
                             <td>
-                                @if ($bill->status == 'pending')
-                                    <input type="number" class="cashback-input" id="cashback_{{ $bill->id }}"
-                                        placeholder="₹ Cashback">
-                                    <div class="cashback-buttons">
-                                        <button class="btn-approve"
-                                            onclick="approveCashback({{ $bill->id }})">Approve</button>
-                                        <button class="btn-discard"
-                                            onclick="discardCashback({{ $bill->id }})">Discard</button>
-                                    </div>
+                                @if ($bill->status === 'pending')
+                                    <form action="{{ route('admin.reward_bill.approve', $bill->id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        <input type="number" name="cashback" class="cashback-input"
+                                            id="cashback_{{ $bill->id }}" placeholder="₹ Reward"
+                                            class="form-control mb-2">
+                                        <div class="cashback-buttons">
+                                            <button class="btn-approve"
+                                                onclick="approveCashback({{ $bill->id }})">Approve</button>
+                                            <button class="btn-discard"
+                                                onclick="discardCashback({{ $bill->id }})">Discard</button>
+                                        </div>
+                                    </form>
                                 @else
                                     ₹{{ number_format($bill->cashback ?? 0, 2) }} <br>
                                     <span class="status-label status-{{ $bill->status }}">
@@ -65,9 +68,10 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.bill_cashback.view', $bill->id) }}" class="btn-view">View</a>
+                                <a href="{{ route('admin.reward_bill.view', $bill->id) }}" class="btn-view">View</a>
                                 <button class="btn-delete" onclick="openDeleteModal({{ $bill->id }})">Delete</button>
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -109,7 +113,7 @@
     </script>
     <script>
         function openDeleteModal(id) {
-            document.getElementById('deleteProductForm').action = `/admin/bill-cashback/delete/${id}`;
+            document.getElementById('deleteProductForm').action = `/admin/reward-bill/delete/${id}`;
             document.getElementById('sliderDeleteModal').classList.add('show');
         }
 
@@ -138,7 +142,8 @@
         }
 
         function discardCashback(id) {
-            fetch(`/admin/bill-cashback/discard/${id}`, {
+            fetch(`/admin/reward-bill/discard/${id}`, {
+
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'

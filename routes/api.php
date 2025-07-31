@@ -13,6 +13,10 @@ use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\SubscriptionApiController;
 use App\Http\Controllers\Api\WalletApiController;
 use App\Http\Controllers\Api\BuySubscriptionAPIController;
+use App\Http\Controllers\Api\BillCashbackAPIController;
+use App\Http\Controllers\Api\BillRewardAPIController;
+
+
 
 
 
@@ -38,8 +42,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/buysubscription', [BuySubscriptionAPIController::class, 'store']);
 
 
-        Route::get('/rewards', [WalletApiController::class, 'show']);
+    Route::get('/rewards', [WalletApiController::class, 'show']);
 
+
+    Route::post('/cashbackbill/upload', [BillCashbackAPIController::class, 'upload']);
+    Route::get('/cashbackbill/history', [BillCashbackAPIController::class, 'history']);
+
+    Route::post('/rewardbill/upload', [BillRewardAPIController::class, 'upload']);
+    Route::get('/rewardbill/history', [BillRewardAPIController::class, 'history']);
 });
 
 
