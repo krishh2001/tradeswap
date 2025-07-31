@@ -113,7 +113,7 @@
     </script>
     <script>
         function openDeleteModal(id) {
-            document.getElementById('deleteProductForm').action = `/admin/reward-bill/delete/${id}`;
+            document.getElementById('deleteProductForm').action = `{{ url('/admin/reward-bill/delete') }}/${id}`;
             document.getElementById('sliderDeleteModal').classList.add('show');
         }
 

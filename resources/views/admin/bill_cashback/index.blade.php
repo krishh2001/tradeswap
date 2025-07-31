@@ -109,7 +109,7 @@
     </script>
     <script>
         function openDeleteModal(id) {
-            document.getElementById('deleteProductForm').action = `/admin/bill-cashback/delete/${id}`;
+            document.getElementById('deleteProductForm').action = `{{ url('/admin/bill-cashback/delete') }}/${id}`;
             document.getElementById('sliderDeleteModal').classList.add('show');
         }
 
