@@ -31,7 +31,7 @@ public function approve(Request $request, $id)
     $bill->status = 'approved';
     $bill->save();
 
-    return redirect()->route('admin.reward_bill.index')->with('success', 'Cashback Approved .');
+    return redirect()->route('admin.reward_bill.index')->with('success', 'Reward Approved .');
 }
 
 
@@ -43,7 +43,7 @@ public function approve(Request $request, $id)
     $reward->status = 'discarded';
     $reward->save();
 
-    return redirect()->route('admin.reward_bill.index')->with('success', 'Cashback discarded.');
+    return redirect()->route('admin.reward_bill.index')->with('success', 'Reward discarded.');
 }
 
 
