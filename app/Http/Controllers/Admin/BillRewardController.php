@@ -45,7 +45,8 @@ public function approve(Request $request, $id)
         $user->save();
     }
 
-    return response()->json(['success' => true, 'message' => 'Reward Approved & Wallet Updated']);
+        return redirect()->route('admin.reward_bill.index')->with('success', 'Reward Approved.');
+
 }
 
 
