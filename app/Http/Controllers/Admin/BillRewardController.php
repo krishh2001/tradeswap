@@ -26,13 +26,28 @@ public function approve(Request $request, $id)
 {
     $request->validate(['cashback' => 'required|numeric|min:1']);
 
-    $bill = RewardBill::findOrFail($id);
-    $bill->cashback = $request->cashback;
+    $bill = RewardBill::with('user')->findOrFail($id);
+    $cashback = $request->cashback;
+
+    if ($bill->status === 'approved') {
+        return response()->json(['success' => false, 'message' => 'Already approved.']);
+    }
+
+    // Step 1: Update reward bill
+    $bill->cashback = $cashback;
     $bill->status = 'approved';
     $bill->save();
 
-    return redirect()->route('admin.reward_bill.index')->with('success', 'Reward Approved .');
+    // Step 2: Update user's wallet balance
+    $user = $bill->user;
+    if ($user) {
+        $user->wallet_balance += $cashback;
+        $user->save();
+    }
+
+    return response()->json(['success' => true, 'message' => 'Reward Approved & Wallet Updated']);
 }
+
 
 
    public function discardCashback($id)

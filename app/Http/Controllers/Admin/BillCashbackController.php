@@ -20,16 +20,32 @@ class BillCashbackController extends Controller
         return view('admin.bill_cashback.view', compact('bill'));
     }
 
-    public function approveCashback(Request $request, $id)
-    {
-        $request->validate(['cashback' => 'required|numeric|min:1']);
-        $bill = Bill::findOrFail($id);
-        $bill->cashback = $request->cashback;
-        $bill->status = 'approved';
-        $bill->save();
+   public function approveCashback(Request $request, $id)
+{
+    $request->validate(['cashback' => 'required|numeric|min:1']);
 
-        return response()->json(['success' => true]);
+    $bill = Bill::with('user')->findOrFail($id);
+    $cashback = $request->cashback;
+
+    if ($bill->status === 'approved') {
+        return response()->json(['success' => false, 'message' => 'Cashback already approved.']);
     }
+
+    // Step 1: Update bill cashback and status
+    $bill->cashback = $cashback;
+    $bill->status = 'approved';
+    $bill->save();
+
+    // Step 2: Add cashback to user's wallet
+    $user = $bill->user;
+    if ($user) {
+        $user->wallet_balance += $cashback;
+        $user->save();
+    }
+
+    return response()->json(['success' => true, 'message' => 'Cashback approved and wallet updated.']);
+}
+
 
     public function discardCashback($id)
     {

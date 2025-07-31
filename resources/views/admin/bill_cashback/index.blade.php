@@ -122,11 +122,11 @@
             if (cashback === '') return alert('Please enter cashback amount');
 
             fetch(`{{ url('/admin/bill-cashback/approve') }}/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
                     body: JSON.stringify({
                         cashback
                     })
@@ -138,7 +138,7 @@
         }
 
         function discardCashback(id) {
-                fetch(`{{ url('/admin/bill-cashback/discard') }}/${id}`, {
+            fetch(`{{ url('/admin/bill-cashback/discard') }}/${id}`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
