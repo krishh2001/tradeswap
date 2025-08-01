@@ -18,10 +18,16 @@
             <label>Product</label>
             <p class="form-value">{{ $order->product->name ?? 'N/A' }}</p>
         </div>
+      
 
         <div class="form-group">
             <label>Total Price</label>
             <p class="form-value">₹{{ number_format($order->total_price, 2) }}</p>
+        </div>
+
+          <div class="form-group">
+            <label>Address</label>
+            <p class="form-value">{{ $order->address ?? 'N/A' }}</p>
         </div>
 
         {{-- <div class="form-group">

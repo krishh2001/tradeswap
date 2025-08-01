@@ -24,6 +24,7 @@
                         <th>Customer</th>
                         <th>Product</th>
                         <th>Total Price</th>
+                        <th>Address</th>
                         {{-- <th>Status</th> --}}
                         <th>Placed At</th>
                         <th>Action</th>
@@ -36,6 +37,7 @@
                             <td>{{ $order->user->name ?? 'Guest' }}</td>
                             <td>{{ $order->product->name ?? 'N/A' }}</td>
                             <td>₹{{ number_format($order->total_price, 2) }}</td>
+                            <td>{{ $order->address ?? 'N/A' }}</td>
                             {{-- <td>
                                 <span class="badge {{ $order->status == 'completed' ? 'badge-success' : 'badge-warning' }}">
                                     {{ ucfirst($order->status) }}

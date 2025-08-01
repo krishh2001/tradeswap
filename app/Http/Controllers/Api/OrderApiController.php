@@ -38,6 +38,8 @@ class OrderApiController extends Controller
             'order_id'    => 'required|unique:orders',
             'product_id'  => 'required|exists:products,id',
             'total_price' => 'required|numeric',
+                'address'     => 'nullable|string|max:255',
+
         ]);
 
         $order = Order::create([
@@ -45,6 +47,7 @@ class OrderApiController extends Controller
             'user_id'     => $user->id, // Taken from token
             'product_id'  => $request->product_id,
             'total_price' => $request->total_price,
+             'address'     => $request->address,
             // 'status'      => 'pending',
         ]);
 
