@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::get('/rewards', [WalletApiController::class, 'show']);
+    Route::post('/orders', [OrderApiController::class, 'store']);
 
 
     Route::post('/cashbackbill/upload', [BillCashbackAPIController::class, 'upload']);
@@ -72,7 +73,6 @@ Route::get('/products/{id}', [ProductApiController::class, 'show']);
 
 
 Route::get('/orders', [OrderApiController::class, 'index']); // Admin fetch all orders
-Route::post('/order', [OrderApiController::class, 'store']); // Place new order
 
 
 
