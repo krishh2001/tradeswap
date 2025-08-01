@@ -3,36 +3,46 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Order;
 
 class OrderApiController extends Controller
 {
     // Admin sees all orders
-   public function index()
-{
-    $orders = Order::with('user', 'product')->latest()->get();
+    public function index()
+    {
+        $orders = Order::with('user', 'product')->latest()->get();
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Orders fetched successfully',
-        'data' => $orders,
-    ], 200);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Orders fetched successfully',
+            'data' => $orders,
+        ], 200);
+    }
 
-    // User places an order
+
     public function store(Request $request)
     {
+        // Get the authenticated user from token
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Token missing or invalid.'
+            ], 401);
+        }
+
         $request->validate([
             'order_id'    => 'required|unique:orders',
-            'user_id'     => 'required|exists:users,id',
             'product_id'  => 'required|exists:products,id',
             'total_price' => 'required|numeric',
         ]);
 
         $order = Order::create([
             'order_id'    => $request->order_id,
-            'user_id'     => $request->user_id,
+            'user_id'     => $user->id, // Taken from token
             'product_id'  => $request->product_id,
             'total_price' => $request->total_price,
             'status'      => 'pending',
