@@ -45,7 +45,7 @@ class OrderApiController extends Controller
             'user_id'     => $user->id, // Taken from token
             'product_id'  => $request->product_id,
             'total_price' => $request->total_price,
-            'status'      => 'pending',
+            // 'status'      => 'pending',
         ]);
 
         return response()->json([
