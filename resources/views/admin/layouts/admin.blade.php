@@ -40,11 +40,11 @@
         <a href="{{ route('admin.withdraw_request.index') }}"><i class="fas fa-user-check"></i>Withdraw Request</a>
     </li>
 
-    <li class="{{ request()->is('admin/coupons*') ? 'active' : '' }}">
+    {{-- <li class="{{ request()->is('admin/coupons*') ? 'active' : '' }}">
         <a href="{{ route('admin.coupons.index') }}">
             <i class="fas fa-tags"></i> Coupons
         </a>
-    </li>
+    </li> --}}
 
     {{-- 
     <li class="{{ request()->is('admin/payments*') ? 'active' : '' }}">

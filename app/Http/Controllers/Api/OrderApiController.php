@@ -24,9 +24,8 @@ class OrderApiController extends Controller
                 'price'        => $order->product->price,
                 'stock'        => $order->product->stock,
                 'description'  => $order->product->description,
-                'product_img'  => $order->product->product_img,
-                // 'product_status' => $order->product->status,    
-                'order_status'   => $order->status,              // ✅ added — pending/complete
+                'product_img'  => $order->product->product_img,   
+                'order_status'   => $order->status,         
                 'created_at'   => $order->created_at,
                 'updated_at'   => $order->updated_at,
             ];
