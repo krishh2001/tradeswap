@@ -9,9 +9,10 @@ use App\Models\BillReward;
 
 class WalletApiController extends Controller
 {
+    // Get all users with wallet info (admin view)
     public function index()
     {
-        $users = User::select('id', 'name', 'email', 'status', 'wallet_balance')->get();
+        $users = User::select('id', 'name', 'email', 'status', 'wallet_reward', 'wallet_cashback')->get();
 
         if ($users->isEmpty()) {
             return response()->json([
@@ -27,6 +28,7 @@ class WalletApiController extends Controller
         ]);
     }
 
+    // Get wallet info for the logged-in user
     public function show()
     {
         $user = Auth::user();
@@ -41,7 +43,7 @@ class WalletApiController extends Controller
 
         // Get latest approved bill
         $latestBill = $user->billRewards()
-            ->where('status', 'approved') // Only consider approved subscriptions
+            ->where('status', 'approved')
             ->latest()
             ->first();
 
@@ -52,8 +54,9 @@ class WalletApiController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'status' => $user->status,
-                'wallet_balance' => $user->wallet_balance,
-                'plan' => $latestBill ? $latestBill->plan : null, // <-- Add this line
+                'wallet_reward' => $user->wallet_reward ?? 0,
+                'wallet_cashback' => $user->wallet_cashback ?? 0,
+                'plan' => $latestBill ? $latestBill->plan : null,
                 'remaining_days' => $latestBill ? $latestBill->remaining_days : null,
             ]
         ]);

@@ -31,6 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    // Wallet Details
+       Route::get('/wallet', [WalletApiController::class, 'show']);
+
+
+
     Route::post('/support-tickets', [SupportTicketController::class, 'store']);
 
     Route::delete('/delete-account', [AuthController::class, 'deleteAccount']);

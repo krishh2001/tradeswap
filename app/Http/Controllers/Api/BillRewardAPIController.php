@@ -76,7 +76,7 @@ class BillRewardAPIController extends Controller
 
             $history = $bills->map(function ($bill) {
                 return [
-                    'date' => $bill->created_at->format('d-m-Y'),
+                    'date' => $bill->created_at->format('d-m-Y h:i A'), // example: 05-08-2025 03:45 PM
                     'amount' => $bill->status === 'approved' ? number_format($bill->cashback, 2) : 0,
                     'status' => ucfirst($bill->status)
                 ];
