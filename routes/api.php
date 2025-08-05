@@ -44,6 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/rewards', [WalletApiController::class, 'show']);
     Route::post('/orders', [OrderApiController::class, 'store']);
+    Route::get('/ordered_list', [OrderApiController::class, 'index']);
+
 
 
     Route::post('/cashbackbill/upload', [BillCashbackAPIController::class, 'upload']);
@@ -67,13 +69,6 @@ Route::get('/subscriptions', [SubscriptionApiController::class, 'index']);
 
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{id}', [ProductApiController::class, 'show']);
-
-
-
-
-
-Route::get('/orders', [OrderApiController::class, 'index']); // Admin fetch all orders
-
 
 
 // Example: /api/pages/privacy_policy

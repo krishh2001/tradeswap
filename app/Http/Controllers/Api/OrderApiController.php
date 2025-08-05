@@ -11,15 +11,33 @@ class OrderApiController extends Controller
 {
     // Admin sees all orders
     public function index()
-    {
-        $orders = Order::with('user', 'product')->latest()->get();
+{
+    $orders = Order::with('product')->latest()->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Orders fetched successfully',
-            'data' => $orders,
-        ], 200);
-    }
+    $products = $orders->map(function ($order) {
+        return [
+            'id' => $order->product->id,
+            'order_id' => $order->order_id,
+            'product_id' => $order->product_id,
+            'name' => $order->product->name,
+            'actual_price' => $order->product->actual_price,
+            'price' => $order->product->price,
+            'stock' => $order->product->stock,
+            'description' => $order->product->description,
+            'product_img' => $order->product->product_img,
+            'status' => $order->product->status,
+            'created_at' => $order->product->created_at,
+            'updated_at' => $order->product->updated_at,
+        ];
+    });
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Product details fetched successfully',
+        'data' => $products,
+    ]);
+}
+
 
 
     public function store(Request $request)
