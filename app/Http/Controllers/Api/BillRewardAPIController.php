@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use App\Models\RewardBill;
+use App\Models\BillReward;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -32,13 +32,13 @@ class BillRewardAPIController extends Controller
             $filename = $request->file('file')->store('bills', 'public');
 
             // Create new bill entry
-            $bill = RewardBill::create([
-                'user_id'     => $user->id,
-                'bill_number' => 'BILL-' . strtoupper(Str::random(8)),
-                'file'        => $filename,
-                'reward_cashback'    => 0,
-                'status'      => 'pending',
-            ]);
+           $bill = BillReward::create([
+    'user_id' => $user->id,
+    'bill_no' => 'BILL-' . strtoupper(Str::random(8)), // ✅ fix field name
+    'bill_pdf' => $filename, // ✅ match with admin blade
+    'reward' => 0, // ✅ fix column name
+    'status' => 'pending',
+]);
 
             return response()->json([
                 'success'     => true,
@@ -70,20 +70,20 @@ class BillRewardAPIController extends Controller
                 ], 401);
             }
 
-            $bills = RewardBill::where('user_id', $user->id)
+            $bills = BillReward::where('user_id', $user->id)
                 ->latest()
                 ->get();
 
             $history = $bills->map(function ($bill) {
-                return [
-                    'date' => now()->format('d-m-Y h:i A'), // Always current time
-                    'amount' => $bill->status === 'approved' ? number_format($bill->cashback, 2) : 0,
-                    'status' => ucfirst($bill->status)
-                ];
-            });
+    return [
+        'date' => now()->format('d-m-Y h:i A'),
+        'amount' => $bill->status === 'approved' ? number_format($bill->reward, 2) : 0,
+        'status' => ucfirst($bill->status)
+    ];
+});
 
+$totalCashback = $bills->where('status', 'approved')->sum('reward');
 
-            $totalCashback = $bills->where('status', 'approved')->sum('cashback');
 
             return response()->json([
                 'success' => true,
