@@ -53,10 +53,10 @@ class OrderApiController extends Controller
         }
 
         $request->validate([
-            'order_id'    => 'required|unique:orders',
+            // 'order_id'    => 'required|unique:orders',
             'product_id'  => 'required|exists:products,id',
             'total_price' => 'required|numeric',
-                'address'     => 'nullable|string|max:255',
+           'address'     => 'nullable|string|max:255',
 
         ]);
 
