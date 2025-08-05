@@ -9,40 +9,39 @@ use App\Models\Order;
 
 class OrderApiController extends Controller
 {
-    // Admin sees all orders
+    // ✅ Admin sees all orders
     public function index()
-{
-    $orders = Order::with('product')->latest()->get();
+    {
+        $orders = Order::with('product')->latest()->get();
 
-    $products = $orders->map(function ($order) {
-        return [
-            'id' => $order->product->id,
-            'order_id' => $order->order_id,
-            'product_id' => $order->product_id,
-            'name' => $order->product->name,
-            'actual_price' => $order->product->actual_price,
-            'price' => $order->product->price,
-            'stock' => $order->product->stock,
-            'description' => $order->product->description,
-            'product_img' => $order->product->product_img,
-            'status' => $order->product->status,
-            'created_at' => $order->product->created_at,
-            'updated_at' => $order->product->updated_at,
-        ];
-    });
+        $products = $orders->map(function ($order) {
+            return [
+                'id'           => $order->product->id,
+                'order_id'     => $order->order_id,
+                'product_id'   => $order->product_id,
+                'name'         => $order->product->name,
+                'actual_price' => $order->product->actual_price,
+                'price'        => $order->product->price,
+                'stock'        => $order->product->stock,
+                'description'  => $order->product->description,
+                'product_img'  => $order->product->product_img,
+                // 'product_status' => $order->product->status,    
+                'order_status'   => $order->status,              // ✅ added — pending/complete
+                'created_at'   => $order->created_at,
+                'updated_at'   => $order->updated_at,
+            ];
+        });
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Product details fetched successfully',
-        'data' => $products,
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Order details fetched successfully',
+            'data'    => $products,
+        ]);
+    }
 
-
-
+    // ✅ Store Order
     public function store(Request $request)
     {
-        // Get the authenticated user from token
         $user = Auth::user();
 
         if (!$user) {
@@ -52,22 +51,25 @@ class OrderApiController extends Controller
             ], 401);
         }
 
+        // Validation
         $request->validate([
-            // 'order_id'    => 'required|unique:orders',
             'product_id'  => 'required|exists:products,id',
             'total_price' => 'required|numeric',
-           'address'     => 'nullable|string|max:255',
-
+            'address'     => 'nullable|string|max:255',
         ]);
 
+        // ✅ Create order with default status
         $order = Order::create([
-            'order_id'    => $request->order_id,
-            'user_id'     => $user->id, // Taken from token
+            'user_id'     => $user->id,
             'product_id'  => $request->product_id,
             'total_price' => $request->total_price,
-             'address'     => $request->address,
-            // 'status'      => 'pending',
+            'address'     => $request->address,
+            'status'      => 'pending', // ✅ default status
         ]);
+
+        // Generate unique order_id
+        $order->order_id = 'ORD-' . str_pad($order->id, 5, '0', STR_PAD_LEFT);
+        $order->save();
 
         return response()->json([
             'message' => 'Order placed successfully',
