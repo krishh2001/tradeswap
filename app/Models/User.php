@@ -25,8 +25,8 @@ class User extends Authenticatable
         'referred_by',
         'email_otp',
         'is_email_verified',
-       'wallet_reward', 
-       'wallet_cashback',
+        'wallet_reward', 
+        'wallet_cashback',
         'status',
         'date_of_joining',
     ];

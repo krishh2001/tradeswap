@@ -128,19 +128,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('bill-cashback')->name('bill_cashback.')->group(function () {
             Route::get('/', [BillCashbackController::class, 'index'])->name('index');
             Route::get('/view/{id}', [BillCashbackController::class, 'view'])->name('view');
-            Route::post('/approve/{id}', [BillCashbackController::class, 'approveCashback']);
-            Route::post('/discard/{id}', [BillCashbackController::class, 'discardCashback']);
-            Route::delete('/delete/{id}', [BillCashbackController::class, 'destroy']);
+            Route::post('/approve/{id}', [BillCashbackController::class, 'approve'])->name('approve');
+            Route::post('/discard/{id}', [BillCashbackController::class, 'discard'])->name('discard');
+            Route::delete('/delete/{id}', [BillCashbackController::class, 'destroy'])->name('destroy');
         });
 
-        // ✅ Bill Details
+
+        // ✅ Bill Reward Details
         Route::prefix('reward-bill')->name('reward_bill.')->group(function () {
             Route::get('/', [BillRewardController::class, 'index'])->name('index');
             Route::get('/view/{id}', [BillRewardController::class, 'view'])->name('view');
             Route::post('/approve/{id}', [BillRewardController::class, 'approve'])->name('approve');
-            Route::post('/discard/{id}', [BillRewardController::class, 'discardCashback'])->name('discard');
-            Route::delete('/delete/{id}', [BillRewardController::class, 'destroy'])->name('destroy');
+            Route::post('/discard/{id}', [BillRewardController::class, 'discard'])->name('discard');
+            Route::delete('/delete/{id}', [BillRewardController::class, 'destroy'])->name('delete');
         });
+
+
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bill;
+use App\Models\BillReward;
 
 class BillCashbackController extends Controller
 {
@@ -20,48 +21,64 @@ class BillCashbackController extends Controller
         return view('admin.bill_cashback.view', compact('bill'));
     }
 
-   public function approveCashback(Request $request, $id)
+    public function approve(Request $request, $id)
 {
-    $request->validate(['cashback' => 'required|numeric|min:1']);
+    try {
+        $request->validate([
+            'cashback' => 'required|numeric|min:0',
+        ]);
 
-    $bill = Bill::with('user')->findOrFail($id);
-    $cashback = $request->cashback;
+        $bill = Bill::with('user')->findOrFail($id);
+        $user = $bill->user;
 
-    if ($bill->status === 'approved') {
-        return response()->json(['success' => false, 'message' => 'Cashback already approved.']);
-    }
-
-    // Step 1: Update bill cashback and status
-    $bill->cashback = $cashback;
-    $bill->status = 'approved';
-    $bill->save();
-
-    // Step 2: Add cashback to user's wallet
-    $user = $bill->user;
-    if ($user) {
-        $user->wallet_balance += $cashback;
+        $cashback = $request->input('cashback');
+        $user->wallet_cashback += $cashback;
         $user->save();
-    }
 
-    return response()->json(['success' => true, 'message' => 'Cashback approved and wallet updated.']);
+        $bill->cashback = $cashback;
+        $bill->status = 'approved';
+        $bill->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cashback approved successfully.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ], 500);
+    }
 }
 
 
-    public function discardCashback($id)
-    {
+
+
+    public function discard($id)
+{
+    try {
         $bill = Bill::findOrFail($id);
         $bill->status = 'discarded';
         $bill->save();
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Bill has been discarded.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ], 500);
     }
-
-    public function destroy($id)
-{
-    $bill = Bill::findOrFail($id);
-    $bill->delete();
-
-    return redirect()->route('admin.bill_cashback.index')->with('success', 'Bill deleted successfully.');
 }
 
+
+    public function destroy($id)
+    {
+        $bill = Bill::findOrFail($id);
+        $bill->delete();
+
+        return redirect()->route('admin.bill_cashback.index')->with('success', 'Bill deleted successfully.');
+    }
 }

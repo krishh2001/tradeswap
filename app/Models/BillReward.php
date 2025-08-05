@@ -15,6 +15,7 @@ class BillReward extends Model
         'user_id',
         'amount',
         'reward',
+        'cashback', // ✅ added cashback
         'bill_pdf',
         'remaining_days', 
         'status',
@@ -22,7 +23,13 @@ class BillReward extends Model
         'ends_at',
     ];
 
-    protected $dates = ['starts_at', 'ends_at'];
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'amount' => 'decimal:2',
+        'reward' => 'decimal:2',
+        'cashback' => 'decimal:2', 
+    ];
 
     public function user()
     {
