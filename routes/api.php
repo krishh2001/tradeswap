@@ -56,8 +56,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cashbackbill/upload', [BillCashbackAPIController::class, 'upload']);
     Route::get('/cashbackbill/history', [BillCashbackAPIController::class, 'history']);
 
-    Route::post('/rewardbill/upload', [BillRewardAPIController::class, 'upload']);
-    Route::get('/rewardbill/history', [BillRewardAPIController::class, 'history']);
+    // Route::post('/rewardbill/upload', [BillRewardAPIController::class, 'upload']);
+    // Route::get('/rewardbill/history', [BillRewardAPIController::class, 'history']);
+
+      Route::post('/reward-bill/upload', [BillRewardAPIController::class, 'upload']);
+    Route::get('/reward-bill', [BillRewardAPIController::class, 'index']);
+    Route::get('/reward-bill/{id}', [BillRewardAPIController::class, 'show']);
 });
 
 

@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\BillReward;
+use App\Models\RewardBill;
 use App\Models\User;
 
 class BillRewardController extends Controller
 {
     public function index()
 {
-    $reward_bills = BillReward::with('user')->orderBy('created_at', 'desc')->get();
+    $reward_bills = RewardBill::with('user')->orderBy('created_at', 'desc')->get();
 
     return view('admin.reward_bill.index', compact('reward_bills'));
 }
 
     public function view($id)
     {
-        $bill = BillReward::with('user')->findOrFail($id);
+        $bill = RewardBill::with('user')->findOrFail($id);
         return view('admin.reward_bill.view', compact('bill'));
     }
 
@@ -29,7 +29,7 @@ class BillRewardController extends Controller
                 'reward' => 'required|numeric|min:0',
             ]);
 
-            $bill = BillReward::with('user')->findOrFail($id);
+            $bill = RewardBill::with('user')->findOrFail($id);
             $user = $bill->user;
 
             $reward = $request->input('reward');
@@ -55,7 +55,7 @@ class BillRewardController extends Controller
     public function discard($id)
     {
         try {
-            $bill = BillReward::findOrFail($id);
+            $bill = RewardBill::findOrFail($id);
             $bill->status = 'discarded';
             $bill->save();
 
@@ -73,7 +73,7 @@ class BillRewardController extends Controller
 
     public function destroy($id)
     {
-        $bill = BillReward::findOrFail($id);
+        $bill = RewardBill::findOrFail($id);
         $bill->delete();
 
         return redirect()->route('admin.reward_bill.index')->with('success', 'Bill deleted successfully.');

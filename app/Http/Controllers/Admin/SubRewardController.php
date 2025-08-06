@@ -22,33 +22,32 @@ class SubRewardController extends Controller
         return view('admin.sub_reward.view', compact('bill'));
     }
 
-    public function approve(Request $request, $id)
-    {
-        $request->validate([
-            'reward' => 'required|numeric|min:1',
-        ]);
+   public function approve(Request $request, $id)
+{
+    $request->validate([
+        'reward' => 'required|numeric|min:0',
+    ]);
 
-        $bill = BillReward::findOrFail($id);
+    $bill = BillReward::findOrFail($id);
 
-        // Avoid re-approving already approved rewards
-        if ($bill->status === 'approved') {
-            return back()->with('error', 'This reward is already approved.');
-        }
-
-        DB::transaction(function () use ($request, $bill) {
-            // Update bill status and reward
-            $bill->reward = $request->reward;
-            $bill->status = 'approved';
-            $bill->save();
-
-            // Credit reward to user wallet
-            $user = $bill->user;
-            $user->wallet_balance += $request->reward;
-            $user->save();
-        });
-
-        return back()->with('success', 'Reward approved and credited to user.');
+    // Optional: Prevent duplicate approvals
+    if ($bill->status === 'approved') {
+        return redirect()->back()->with('error', 'Bill is already approved.');
     }
+
+    // Update bill status and reward
+    $bill->reward = $request->reward;
+    $bill->status = 'approved';
+    $bill->save();
+
+    // Add reward to user's wallet
+    $user = $bill->user;
+    $user->wallet_reward += $request->reward;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Reward approved and added to user wallet.');
+}
+
 
     public function discard($id)
     {

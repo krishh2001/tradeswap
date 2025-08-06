@@ -15,7 +15,7 @@ class BillReward extends Model
         'user_id',
         'amount',
         'reward',
-        'cashback', // ✅ added cashback
+        'cashback',
         'bill_pdf',
         'remaining_days', 
         'status',
@@ -31,8 +31,10 @@ class BillReward extends Model
         'cashback' => 'decimal:2', 
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+  public function user()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
+
 }

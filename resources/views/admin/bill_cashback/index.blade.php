@@ -47,7 +47,7 @@
                         <td>
                             @if ($bill->file)
                                 @php
-                                    $fileUrl = url('storage/' . $bill->file);
+                                    $fileUrl = url('public/storage/' . $bill->file);
                                 @endphp
                                 <a href="{{ $fileUrl }}" target="_blank" class="btn-view">View</a>
                             @else

@@ -5,96 +5,90 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use App\Models\BillReward;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use App\Models\RewardBill;
 use Illuminate\Validation\ValidationException;
 
 class BillRewardAPIController extends Controller
 {
-    public function upload(Request $request)
+    /**
+     * Upload a new reward bill.
+     */
+   public function upload(Request $request)
+{
+    try {
+        $request->validate([
+            'file' => 'required|mimes:jpg,jpeg,png,pdf|max:5120', // max 5MB
+        ]);
+
+        $user = Auth::user(); // or set default user_id = 1 for testing
+
+        $filename = Str::random(20) . '.' . $request->file->getClientOriginalExtension();
+        $path = $request->file('file')->storeAs('reward_bills', $filename, 'public');
+
+        $bill = RewardBill::create([
+            'user_id' => $user->id,
+            'bill_number' => strtoupper(Str::random(10)),
+            'file' => $path,
+            'cashback' => 0,
+            'status' => 'pending',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reward bill uploaded successfully.',
+            'data' => $bill,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Something went wrong. Please try again.',
+        ], 500);
+    }
+}
+
+
+    /**
+     * List all bills of the logged-in user
+     */
+    public function index()
     {
-        try {
-            // Validate incoming request
-            $validated = $request->validate([
-                'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
-            ]);
+        $user = Auth::user();
+        $bills = RewardBill::where('user_id', $user->id)->latest()->get();
 
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized access.',
-                ], 401);
-            }
+        // Attach full URL to file
+        $bills->map(function ($bill) {
+            $bill->file_url = Storage::url('reward_bills/' . $bill->file);
+            return $bill;
+        });
 
-            // Store file in public disk under 'bills' folder
-            $filename = $request->file('file')->store('bills', 'public');
-
-            // Create new bill entry
-           $bill = BillReward::create([
-    'user_id' => $user->id,
-    'bill_no' => 'BILL-' . strtoupper(Str::random(8)), // ✅ fix field name
-    'bill_pdf' => $filename, // ✅ match with admin blade
-    'reward' => 0, // ✅ fix column name
-    'status' => 'pending',
-]);
-
-            return response()->json([
-                'success'     => true,
-                'message'     => 'Bill uploaded successfully.',
-                'bill_number' => $bill->bill_number,
-                'reward_cashback'    => 0,
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'errors' => $e->errors(),
-            ], 422);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Something went wrong. Please try again.',
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'data' => $bills,
+        ]);
     }
 
-    public function history()
+    /**
+     * Get a specific bill detail
+     */
+    public function show($id)
     {
-        try {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized access.',
-                ], 401);
-            }
+        $user = Auth::user();
+        $bill = RewardBill::where('id', $id)->where('user_id', $user->id)->first();
 
-            $bills = BillReward::where('user_id', $user->id)
-                ->latest()
-                ->get();
-
-            $history = $bills->map(function ($bill) {
-    return [
-        'date' => now()->format('d-m-Y h:i A'),
-        'amount' => $bill->status === 'approved' ? number_format($bill->reward, 2) : 0,
-        'status' => ucfirst($bill->status)
-    ];
-});
-
-$totalCashback = $bills->where('status', 'approved')->sum('reward');
-
-
-            return response()->json([
-                'success' => true,
-                'total_reward' => number_format($totalCashback, 2),
-                'history' => $history
-            ]);
-        } catch (\Exception $e) {
+        if (!$bill) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to retrieve history.',
-            ], 500);
+                'message' => 'Bill not found.',
+            ], 404);
         }
+
+        $bill->file_url = Storage::url('reward_bills/' . $bill->file);
+
+        return response()->json([
+            'success' => true,
+            'data' => $bill,
+        ]);
     }
 }

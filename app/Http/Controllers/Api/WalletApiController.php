@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\BillReward;
 
+
 class WalletApiController extends Controller
 {
-    // Get all users with wallet info (admin view)
     public function index()
     {
         $users = User::select('id', 'name', 'email', 'status', 'wallet_reward', 'wallet_cashback')->get();
@@ -28,7 +28,6 @@ class WalletApiController extends Controller
         ]);
     }
 
-    // Get wallet info for the logged-in user
     public function show()
     {
         $user = Auth::user();
@@ -41,11 +40,22 @@ class WalletApiController extends Controller
             ]);
         }
 
-        // Get latest approved bill
+        // Fetch latest approved bill reward
         $latestBill = $user->billRewards()
             ->where('status', 'approved')
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->first();
+
+        // Determine plan status
+        if ($latestBill) {
+            if ($latestBill->remaining_days > 0) {
+                $planStatus = 'active';
+            } else {
+                $planStatus = 'expired';
+            }
+        } else {
+            $planStatus = 'no active plan';
+        }
 
         return response()->json([
             'success' => true,
@@ -53,11 +63,13 @@ class WalletApiController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'status' => $user->status,
+                // 'status' => $user->status,
                 'wallet_reward' => $user->wallet_reward ?? 0,
                 'wallet_cashback' => $user->wallet_cashback ?? 0,
-                'plan' => $latestBill ? $latestBill->plan : null,
-                'remaining_days' => $latestBill ? $latestBill->remaining_days : null,
+                'plan' => $latestBill->plan ?? null,
+                'reward_limit' => $latestBill->amount ?? 0,
+                'remaining_days' => $latestBill->remaining_days ?? 0,
+                'plan_status' => $planStatus
             ]
         ]);
     }

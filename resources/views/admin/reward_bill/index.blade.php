@@ -28,7 +28,7 @@
                     @foreach ($reward_bills as $index => $bill)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $bill->bill_no }}</td>
+                            <td>{{ $bill->bill_number }}</td>
                             <td>{{ $bill->user->name ?? 'N/A' }}</td>
                             <td>
                                 @if ($bill->status === 'pending')
@@ -46,8 +46,8 @@
                                 @endif
                             </td>
                             <td>
-                                @if ($bill->bill_pdf)
-                                    <a href="{{ asset('storage/' . $bill->bill_pdf) }}" target="_blank" class="btn-view">View</a>
+                                @if ($bill->file)
+                                    <a href="{{ asset('public/storage/' . $bill->file) }}" target="_blank" class="btn-view">View</a>
                                 @else
                                     N/A
                                 @endif
