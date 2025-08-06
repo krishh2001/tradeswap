@@ -25,7 +25,7 @@
         <div class="form-group"><label>Bill</label>
             @if ($bill->file)
                 @php
-                    $fileUrl = url('public/' . $bill->file); // Add 'public/' prefix manually
+                    $fileUrl = url('public/storage/' . $bill->file); // Add 'public/' prefix manually
                 @endphp
                 <a href="{{ $fileUrl }}" target="_blank" class="btn-delete">View Bill</a>
             @else

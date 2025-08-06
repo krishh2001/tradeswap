@@ -22,7 +22,7 @@
         <div class="form-group"><label>Bill</label>
             @if ($reward_bills->file)
                 @php
-                    $fileUrl = url('public/' . $reward_bills->file); // Add 'public/' prefix manually
+                    $fileUrl = url('public/storage/' . $reward_bills->file); // Add 'public/' prefix manually
                 @endphp
                 <a href="{{ $fileUrl }}" target="_blank" class="btn-delete">View Bill</a>
             @else
