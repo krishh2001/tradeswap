@@ -16,11 +16,12 @@ class BillRewardController extends Controller
     return view('admin.reward_bill.index', compact('reward_bills'));
 }
 
-    public function view($id)
-    {
-        $bill = RewardBill::with('user')->findOrFail($id);
-        return view('admin.reward_bill.view', compact('bill'));
-    }
+   public function view($id)
+{
+    $reward_bills = RewardBill::with('user')->findOrFail($id);
+    return view('admin.reward_bill.view', compact('reward_bills'));
+}
+
 
     public function approve(Request $request, $id)
     {
