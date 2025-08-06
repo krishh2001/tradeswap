@@ -72,5 +72,5 @@ class WalletApiController extends Controller
                 'plan_status' => $planStatus
             ]
         ]);
-    } 
+    }
 }
