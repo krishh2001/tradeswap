@@ -71,9 +71,9 @@
         </a>
     </li>
 
-    <li class="{{ request()->is('admin/wallet*') ? 'active' : '' }}">
+    {{-- <li class="{{ request()->is('admin/wallet*') ? 'active' : '' }}">
         <a href="{{ route('admin.wallet.index') }}"><i class="fas fa-wallet"></i> Wallet</a>
-    </li>
+    </li> --}}
 
     <li class="{{ request()->is('admin/supports*') ? 'active' : '' }}">
         <a href="{{ route('admin.supports.index') }}"><i class="fas fa-headset"></i> Support</a>
