@@ -74,3 +74,4 @@ class WalletApiController extends Controller
         ]);
     }
 }
+ 
